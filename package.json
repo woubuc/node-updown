@@ -8,7 +8,7 @@
     "node": ">=4.2"
   },
   "scripts": {
-  	"prepublish": "node node_modules/.bin/gulp compile"
+  	"prepublish": "gulp compile"
   },
   "author": "",
   "license": "MIT",
