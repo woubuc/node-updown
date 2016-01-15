@@ -13,12 +13,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "moment": "^2.11.1",
-    "request": "2.67.~"
+    "moment": "^2.11.x",
+    "request": "2.67.x"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-coffee": "^2.3.1",
-    "gulp-plumber": "^1.0.1"
+    "gulp": "3.9.x",
+    "gulp-coffee": "2.3.x",
+    "gulp-plumber": "1.0.x"
   }
 }
