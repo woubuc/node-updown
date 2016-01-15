@@ -44,10 +44,21 @@ ud.getCheckMetrics('check_token').then(function(metrics) {
 #### addCheck (url [, interval][, name])
 Adds a new check. Parameter `interval` can be 30, 60, 120, 300 or 600.
 ```javascript
-ud.addCheck('http://example.com', 300).then(function(newCheck) {
+// Add a check for http://example.com with 10 minute interval
+ud.addCheck('http://example.com', 600).then(function(newCheck) {
     console.log(newCheck);
 });
 ```
+
+#### modifyCheck (token [, url][, interval][, name])
+Modifies an existing check.
+```javascript
+// Change a check to 5 minute interval
+ud.modifyCheck('check_token', null, 300).then(function(modifiedCheck) {
+    console.log(modifiedCheck);
+});
+```
+
 
 ## Issues
 If you have any problems or questions, just create an issue and I will take a look at it asap.
