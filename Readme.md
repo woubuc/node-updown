@@ -1,6 +1,10 @@
 # node-updown
 A simple Node.js API wrapper for [updown.io](http://updown.io)
 
+```
+npm install node-updown
+```
+
 # Usage
 Simply create a new Updown instance:
 ```javascript
