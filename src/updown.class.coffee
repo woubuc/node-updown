@@ -167,7 +167,7 @@ class Updown
 			# Assemble params
 			params =
 				url: url
-				interval: interval
+				period: interval
 			params.name = name if name?
 
 			# Create request
