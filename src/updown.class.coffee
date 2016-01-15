@@ -47,16 +47,17 @@ class Updown
 
 	###
 	Posts data to an URL with the Updown API key header
+	@param {string} method - Method for the HTTP request
 	@param {string} url - The API URL to post to
 	@param {object} params - Parameters to be sent in the POST body
 	@param {function} callback - Is called when the request completes
 	###
-	_post: (url, params, callback) ->
+	_req: (method, url, params, callback) ->
 
 		# Initiate POST request
 		request
 			url: url
-			method: 'POST'
+			method: method
 			json: yes
 			form: params
 			headers:
@@ -65,6 +66,8 @@ class Updown
 		# Handle result
 		, (err, response, data) ->
 			callback(err, data)
+
+
 
 
 	###
@@ -171,15 +174,51 @@ class Updown
 			params.name = name if name?
 
 			# Create request
-			@_post 'https://updown.io/api/checks/', params, (err, data) ->
+			@_req 'POST', 'https://updown.io/api/checks/', params, (err, data) ->
 
 				# Reject if request errored
 				return reject(err) if err
 
 				# Resolve with response data
 				resolve(data)
-			
+	
 
+
+	###
+	Adds new check
+	@param {string} token - The token 
+	@param {string} url - (optional) The new URL
+	@param {number} interval - (optional) The new interval in seconds (30, 60, 120, 300 or 600)
+	@param {string} name - (optional) A new alias for the check
+	###
+	modifyCheck: (token, url, interval, name) ->
+
+		# Create promise
+		new Promise (resolve, reject) =>
+
+			# Reject if we're in read-only mode
+			return reject new Error('Updown is set to read-only mode') if @readOnly
+
+			# Check if parameters are valid
+			return reject new TypeError('token parameter should be a string') if typeof token isnt 'string'
+			return reject new TypeError('url parameter should be a string') if url? and typeof url isnt 'string'
+			return reject new TypeError('interval parameter should be a number') if interval? and typeof interval isnt 'number'
+			return reject new RangeError('interval must be 30, 60, 120, 300 or 600') if interval? and interval not in [30, 60, 120, 300, 600]
+
+			# Assemble params
+			params = {}
+			params.url = url if url?
+			params.period = interval if interval?
+			params.name = name if name?
+
+			# Create request
+			@_req 'PUT', 'https://updown.io/api/checks/' + token, params, (err, data) ->
+
+				# Reject if request errored
+				return reject(err) if err
+
+				# Resolve with response data
+				resolve(data)
 
 # Export class
 module.exports = Updown
