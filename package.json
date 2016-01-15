@@ -8,7 +8,7 @@
     "node": ">=4.2"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "moment": "^2.11.1",
     "request": "2.67.~"
