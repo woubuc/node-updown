@@ -31,6 +31,9 @@ class Updown
 		if typeof query is 'function' and not callback?
 			[callback, query] = [query, {}]
 
+		# Add getTime to urls to prevent caching
+		query._t = new Date().getTime()
+
 		# Initiate GET request
 		request
 			url: url
