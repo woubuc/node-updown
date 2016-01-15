@@ -118,7 +118,7 @@ class Updown
 	@param {string} token - The token for a check
 	@param {number} from - Start date of the metrics (timestamp in milliseconds)
 	@param {number} to - End date of the metrics (timestamp in milliseconds)
-	@param {number} sortByTime - Set this to true if you want to get results separated by time instead of totals
+	@param {boolean} sortByTime - Set this to true if you want to get results separated by time instead of totals
 	###
 	getMetrics: (token, from, to, sortByTime = no) ->
 
