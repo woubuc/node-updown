@@ -51,11 +51,20 @@ ud.addCheck('http://example.com', 600).then(function(newCheck) {
 ```
 
 #### modifyCheck (token [, url][, interval][, name])
-Modifies an existing check.
+Modifies a check
 ```javascript
 // Change a check to 5 minute interval
 ud.modifyCheck('check_token', null, 300).then(function(modifiedCheck) {
     console.log(modifiedCheck);
+});
+```
+
+#### deleteCheck (token)
+Deletes a check
+```javascript
+// Change a check to 5 minute interval
+ud.deleteCheck('check_token').then(function(response) {
+    console.log(response.deleted);
 });
 ```
 

@@ -185,7 +185,7 @@ class Updown
 
 
 	###
-	Adds new check
+	Modifies a check
 	@param {string} token - The token 
 	@param {string} url - (optional) The new URL
 	@param {number} interval - (optional) The new interval in seconds (30, 60, 120, 300 or 600)
@@ -219,6 +219,30 @@ class Updown
 
 				# Resolve with response data
 				resolve(data)
+
+	###
+	Deletes a check
+	@param {string} token - Token of the check to delete
+	###
+	deleteCheck: (token) ->
+
+		# Create promise
+		new Promise (resolve, reject) =>
+
+			# Reject if we're in read-only mode
+			return reject new Error('Updown is set to read-only mode') if @readOnly
+
+			# Check if parameters are valid
+			return reject new TypeError('token parameter should be a string') if typeof token isnt 'string'
+
+			@_req 'DELETE', 'https://updown.io/api/checks/' + token, {}, (err, data) ->
+
+				# Reject if request errored
+				return reject(err) if err
+
+				# Resolve with response data
+				resolve(data)
+
 
 # Export class
 module.exports = Updown
