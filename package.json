@@ -1,15 +1,15 @@
 {
-  "name": "node-updown",
+  "name": "@proux/node-updown",
   "version": "0.2.2",
   "description": "An API wrapper for updown.io",
   "main": "lib/updown.class.js",
-  "author": "Wouter Buckens",
+  "author": ["Wouter Buckens", "Nico Lindemann <nico.lindemann@proux.net>"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/woubuc/node-updown"
+    "url": "https://github.com/proux/node-updown"
   },
   "bugs": {
-    "url": "https://github.com/woubuc/node-updown/issues"
+    "url": "https://github.com/proux/node-updown/issues"
   },
   "keywords": [
     "updown",
