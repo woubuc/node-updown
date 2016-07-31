@@ -1,6 +1,6 @@
 {
   "name": "@proux/node-updown",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "An API wrapper for updown.io",
   "main": "lib/updown.class.js",
   "author": ["Wouter Buckens", "Nico Lindemann <nico.lindemann@proux.net>"],
@@ -27,12 +27,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "moment": "2.11.x",
-    "request": "2.67.x"
+    "moment": "2.14.x",
+    "request": "2.74.x"
   },
   "devDependencies": {
     "gulp": "3.9.x",
     "gulp-coffee": "2.3.x",
-    "gulp-plumber": "1.0.x"
+    "gulp-plumber": "1.1.x"
   }
 }
