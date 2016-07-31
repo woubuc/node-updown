@@ -2,7 +2,7 @@
 A simple Node.js API wrapper for [updown.io](http://updown.io)
 
 ```
-npm install node-updown
+npm install @proux/node-updown
 ```
 
 # Usage
