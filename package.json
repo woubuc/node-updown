@@ -1,6 +1,6 @@
 {
   "name": "@proux/node-updown",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "An API wrapper for updown.io",
   "main": "lib/updown.class.js",
   "author": ["Wouter Buckens", "Nico Lindemann <nico.lindemann@proux.net>"],
