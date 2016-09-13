@@ -27,7 +27,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "moment": "2.14.1",
+    "moment": "2.15.0",
     "request": "2.74.0"
   },
   "devDependencies": {
