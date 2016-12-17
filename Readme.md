@@ -2,13 +2,13 @@
 A simple Node.js API wrapper for [updown.io](http://updown.io)
 
 ```
-npm install node-updown
+npm install @proux/node-updown
 ```
 
 # Usage
 Simply create a new Updown instance:
 ```javascript
-Updown = require('node-updown');
+Updown = require('@proux/node-updown');
 var ud = new Updown('api_key');
 ```
 
