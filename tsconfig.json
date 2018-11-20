@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "lib": ["esnext", "dom"],
+
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "removeComments": true,
+
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  }
+}
