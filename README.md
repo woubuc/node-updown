@@ -1,4 +1,5 @@
 # node-updown
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 
 A simple Node.js API wrapper for [updown.io](http://updown.io)
@@ -8,7 +9,9 @@ npm install node-updown
 ```
 
 # Usage
+
 Simply create a new Updown instance:
+
 ```javascript
 import Updown from 'node-updown';
 const ud = new Updown('api_key');
@@ -17,61 +20,78 @@ const ud = new Updown('api_key');
 All methods in the Updown class return promises.
 
 ## Methods
-For more information on the various API endpoints, see the [Updown API documentation](https://updown.io/api)
+
+For more information on the various API endpoints, see the
+[Updown API documentation](https://updown.io/api)
 
 #### getChecks()
+
 Gets all checks
+
 ```javascript
 ud.getChecks().then(checks => {
-    console.log(checks);
+	console.log(checks);
 });
 ```
 
 #### getCheckDowntime(token [, page])
+
 Gets downtime information for a check.
+
 ```javascript
 ud.getCheckDowntime('check_token').then(downtime => {
-    console.log(downtime);
+	console.log(downtime);
 });
 ```
 
 #### getCheckMetrics(token [, from][, to][, sortByTime])
-Gets all metrics for a check. Parameters `from` and `to` are timestamps in milliseconds (e.g. from `Date.getTime()`).
+
+Gets all metrics for a check. Parameters `from` and `to` are timestamps in
+milliseconds (e.g. from `Date.getTime()`).
+
 ```javascript
 ud.getCheckMetrics('check_token').then(metrics => {
-    console.log(metrics);
+	console.log(metrics);
 });
 ```
 
 #### addCheck (url [, interval][, name])
+
 Adds a new check. Parameter `interval` can be 30, 60, 120, 300 or 600.
+
 ```javascript
 // Add a check for http://example.com with 10 minute interval
 ud.addCheck('http://example.com', 600).then(newCheck => {
-    console.log(newCheck);
+	console.log(newCheck);
 });
 ```
 
 #### modifyCheck (token [, url][, interval][, name])
+
 Modifies a check
+
 ```javascript
 // Change a check to 5 minute interval
 ud.modifyCheck('check_token', null, 300).then(modifiedCheck => {
-    console.log(modifiedCheck);
+	console.log(modifiedCheck);
 });
 ```
 
 #### deleteCheck (token)
+
 Deletes a check
+
 ```javascript
 // Change a check to 5 minute interval
 ud.deleteCheck('check_token').then(response => {
-    console.log(response.deleted);
+	console.log(response.deleted);
 });
 ```
 
 ## Issues
-If you have any problems or questions, just create an issue and I will take a look at it asap.
+
+If you have any problems or questions, just create an issue and I will take a
+look at it asap.
 
 ## Contributors ✨
 
@@ -89,9 +109,11 @@ Thanks goes to these wonderful people ([emoji key][emojis]):
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors][all-contributors] specification. Contributions of any kind welcome!
+This project follows the [all-contributors][all-contributors] specification.
+Contributions of any kind welcome!
 
 ## LICENSE
 

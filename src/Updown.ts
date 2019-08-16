@@ -6,12 +6,12 @@ import * as qs from 'querystring';
  * Options object used when creating a new Updown API client
  */
 export interface Options {
-	readOnly ?: boolean;
+	readOnly?: boolean;
 }
 
 /** An object with primitive values (i.e. no arrays/objects) */
 interface PrimitiveObject {
-	[key : string] : string | number;
+	[key: string]: string | number;
 }
 
 /** An HTTP method */
@@ -24,9 +24,8 @@ export type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
  * API client for the updown.io service
  */
 export default class Updown {
-
-	private readonly apiKey : string;
-	private readonly isReadOnly : boolean;
+	private readonly apiKey: string;
+	private readonly isReadOnly: boolean;
 
 	/**
 	 * Initialises the API client
@@ -34,7 +33,7 @@ export default class Updown {
 	 * @param apiKey  Your Updown API key
 	 * @param config  A configuration object
 	 */
-	constructor(apiKey : string, config : Options = {}) {
+	constructor(apiKey: string, config: Options = {}) {
 		this.apiKey = apiKey;
 		this.isReadOnly = config.readOnly || false;
 	}
@@ -52,8 +51,10 @@ export default class Updown {
 	 * @param token   The token for a check
 	 * @param [page]  Page number (results are paginated per 100)
 	 */
-	public async getDowntime(token : string, page : number = 1) {
-		return this.get(`https://updown.io/api/checks/${token}/downtimes`, { page });
+	public async getDowntime(token: string, page: number = 1) {
+		return this.get(`https://updown.io/api/checks/${token}/downtimes`, {
+			page,
+		});
 	}
 
 	/**
@@ -64,8 +65,13 @@ export default class Updown {
 	 * @param [to]     End date of the metrics
 	 * @param [group]  Grouping to use, either 'time' or 'host'
 	 */
-	public async getMetrics(token : string, from ?: Date, to ?: Date, group : 'time' | 'host' = 'host') {
-		const query : PrimitiveObject = { group };
+	public async getMetrics(
+		token: string,
+		from?: Date,
+		to?: Date,
+		group: 'time' | 'host' = 'host'
+	) {
+		const query: PrimitiveObject = { group };
 
 		if (from) query.from = format(from);
 		if (to) query.to = format(to);
@@ -80,12 +86,12 @@ export default class Updown {
 	 * @param interval  The interval in seconds (15, 30, 60, 120, 300, 600, 1800 or 3600)
 	 * @param [name]    An alias to recognise this url by
 	 */
-	public async addCheck(url : string, interval : CheckInterval, name ?: string) {
+	public async addCheck(url: string, interval: CheckInterval, name?: string) {
 		if (this.isReadOnly) {
 			throw new Error('Updown is set to read-only mode');
 		}
 
-		const params : PrimitiveObject = {
+		const params: PrimitiveObject = {
 			url,
 			period: interval,
 		};
@@ -102,12 +108,17 @@ export default class Updown {
 	 * @param [interval]  The new interval in seconds (15, 30, 60, 120, 300, 600, 1800 or 3600)
 	 * @param [name]      A new alias for the check
 	 */
-	public async modifyCheck(token : string, url ?: string, interval ?: CheckInterval, name ?: string) {
+	public async modifyCheck(
+		token: string,
+		url?: string,
+		interval?: CheckInterval,
+		name?: string
+	) {
 		if (this.isReadOnly) {
 			throw new Error('Updown is set to read-only mode');
 		}
 
-		const params : PrimitiveObject = {};
+		const params: PrimitiveObject = {};
 		if (url) params.url = url;
 		if (interval) params.period = interval;
 		if (name) params.name = name;
@@ -120,7 +131,7 @@ export default class Updown {
 	 *
 	 * @param {string} token - Token of the check to delete
 	 */
-	public async deleteCheck(token : string) {
+	public async deleteCheck(token: string) {
 		if (this.isReadOnly) {
 			throw new Error('Updown is set to read-only mode');
 		}
@@ -133,8 +144,7 @@ export default class Updown {
 	 * @param url      The API URL to call
 	 * @param [query]  Parameters to be added to the querystring
 	 */
-	private async get(url : string, query : PrimitiveObject = {}) {
-
+	private async get(url: string, query: PrimitiveObject = {}) {
 		// Add timestamp to query to prevent caching
 		query._t = new Date().getTime();
 
@@ -151,7 +161,11 @@ export default class Updown {
 	 *  @param [method]  Method for the HTTP request
 	 *  @param [params]  Parameters to be sent in the POST body
 	 */
-	private async req(url : string, method : HttpMethod = 'POST', params : PrimitiveObject = {}) {
+	private async req(
+		url: string,
+		method: HttpMethod = 'POST',
+		params: PrimitiveObject = {}
+	) {
 		const res = await fetch(url, {
 			method,
 			body: qs.stringify(params),
@@ -159,7 +173,6 @@ export default class Updown {
 		});
 		return res.json();
 	}
-
 }
 
 module.exports = Updown;
