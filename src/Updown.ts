@@ -6,7 +6,7 @@ import * as qs from 'querystring';
  * Options object used when creating a new Updown API client
  */
 export interface Options {
-	readOnly? : boolean;
+	readOnly ?: boolean;
 }
 
 /** An object with primitive values (i.e. no arrays/objects) */
@@ -64,7 +64,7 @@ export default class Updown {
 	 * @param [to]     End date of the metrics
 	 * @param [group]  Grouping to use, either 'time' or 'host'
 	 */
-	public async getMetrics(token : string, from? : Date, to? : Date, group : 'time' | 'host' = 'host') {
+	public async getMetrics(token : string, from ?: Date, to ?: Date, group : 'time' | 'host' = 'host') {
 		const query : PrimitiveObject = { group };
 
 		if (from) query.from = format(from);
@@ -80,7 +80,7 @@ export default class Updown {
 	 * @param interval  The interval in seconds (15, 30, 60, 120, 300, 600, 1800 or 3600)
 	 * @param [name]    An alias to recognise this url by
 	 */
-	public async addCheck(url : string, interval : CheckInterval, name? : string) {
+	public async addCheck(url : string, interval : CheckInterval, name ?: string) {
 		if (this.isReadOnly) {
 			throw new Error('Updown is set to read-only mode');
 		}
@@ -102,7 +102,7 @@ export default class Updown {
 	 * @param [interval]  The new interval in seconds (15, 30, 60, 120, 300, 600, 1800 or 3600)
 	 * @param [name]      A new alias for the check
 	 */
-	public async modifyCheck(token : string, url? : string, interval? : CheckInterval, name? : string) {
+	public async modifyCheck(token : string, url ?: string, interval ?: CheckInterval, name ?: string) {
 		if (this.isReadOnly) {
 			throw new Error('Updown is set to read-only mode');
 		}
