@@ -16,8 +16,8 @@
     "build": "rimraf dist/* && tsc",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "prepublish": "run-s build",
-    "test": "tslint --project . --fix"
+    "lint": "eslint --ext .ts src/*",
+    "prepublish": "run-s build"
   },
   "dependencies": {
     "date-fns": "^1.30.1",
@@ -25,10 +25,13 @@
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.0",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
     "all-contributors-cli": "^6.8.1",
+    "eslint": "^6.1.0",
+    "eslint-plugin-jsdoc": "^15.8.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.0",
-    "tslint": "^5.18.0",
     "typescript": "^3.5.3"
   },
   "keywords": [
