@@ -16,8 +16,9 @@
     "build": "rimraf dist/* && tsc",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "lint": "eslint --ext .ts src/*",
-    "prepublish": "run-s build"
+    "lint": "eslint --ext .ts src/* --fix",
+    "prepublish": "run-s build",
+    "test": "run-s lint"
   },
   "dependencies": {
     "date-fns": "^1.30.1",
