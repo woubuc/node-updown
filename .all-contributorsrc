@@ -1,0 +1,33 @@
+{
+  "projectName": "node-updown",
+  "projectOwner": "woubuc",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "woubuc",
+      "name": "Wouter Buckens",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1015540?v=4",
+      "profile": "https://www.woubuc.be",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "MichaelDeBoey",
+      "name": "Michaël De Boey",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6643991?v=4",
+      "profile": "https://michaeldeboey.be",
+      "contributions": [
+        "maintenance"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
