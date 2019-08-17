@@ -3,6 +3,7 @@ module.exports = {
 
 	testEnvironment: 'node',
 	rootDir: 'src/',
+	coverageDirectory: '<rootDir>../coverage',
 
 	testMatch: ['**/?(*.)+(Spec).ts'],
 };
