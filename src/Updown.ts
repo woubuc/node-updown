@@ -2,13 +2,6 @@ import { format } from 'date-fns';
 import ApiClient from './ApiClient';
 import IApiClient from './IApiClient';
 
-/**
- * Options object used when creating a new Updown API client
- */
-export interface IOptions {
-	readOnly : boolean;
-}
-
 /** The interval for checks */
 export type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
 
@@ -22,11 +15,11 @@ export default class Updown {
 	/**
 	 * Initialises the API client
 	 *
-	 * @param apiKey  Your Updown API key
-	 * @param config  A configuration object
+	 * @param apiKey    Your Updown API key
+	 * @param readonly  True if the given API key is readonly
 	 */
-	constructor(apiKey : string, config : Partial<IOptions> = {}) {
-		this.client = new ApiClient(apiKey, !!config.readOnly);
+	constructor(apiKey : string, readonly : boolean = false) {
+		this.client = new ApiClient(apiKey, readonly);
 	}
 
 	/**
