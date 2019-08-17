@@ -1,5 +1,5 @@
 # node-updown
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
 A simple Node.js API wrapper for [updown.io](http://updown.io)
 
@@ -73,9 +73,9 @@ updown.deleteCheck('check_token').then(response => {
 ## Issues
 If you have any problems or questions, just create an issue and I will take a look at it asap.
 
-## Contributors ✨
+## Contributors
 
-Thanks goes to these wonderful people ([emoji key][emojis]):
+Thanks goes to these wonderful people ([emoji key][emojis]) ✨
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -95,7 +95,7 @@ This project follows the [all-contributors][all-contributors] specification. Con
 
 ## LICENSE
 
-MIT
+This package is licensed under the [MIT license](/LICENSE)
 
 <!-- prettier-ignore-start -->
 [emojis]: https://allcontributors.org/docs/en/emoji-key
