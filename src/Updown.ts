@@ -25,13 +25,24 @@ export default class Updown {
 	 * Gets all checks for the user
 	 */
 	public async getChecks() : Promise<Check[]> {
-		const checksData : any = await this.client.get('checks');
+		const checksData = await this.client.get('checks');
 
 		if (!Array.isArray(checksData)) {
 			throw new TypeError(`Received invalid data from API. Expected array, got ${ typeof checksData }`);
 		}
 
 		return checksData.map(data => new Check(data));
+	}
+
+	/**
+	 * Gets a single check
+	 *
+	 * @param token  The token of the check
+	 */
+	public async getCheck(token : string) : Promise<Check> {
+		const checkData = await this.client.get(`checks/${ token }`);
+
+		return new Check(checkData);
 	}
 
 	/**

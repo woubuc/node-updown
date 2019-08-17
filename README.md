@@ -17,6 +17,11 @@ import Updown from 'node-updown';
 const updown = new Updown('API_KEY');
 ```
 
+To use a readonly key, set the second parameter to `true`:
+```javascript
+const updown = new Updown('READONLY_API_KEY', true);
+```
+
 All methods in the Updown class return promises.
 
 ## Methods
@@ -27,6 +32,14 @@ Gets all checks.
 ```javascript
 updown.getChecks().then(checks => {
     console.log(checks);
+});
+```
+
+#### getCheck(token)
+Gets a single check.
+```javascript
+updown.getCheck('check_token').then(check => {
+    console.log(check);
 });
 ```
 

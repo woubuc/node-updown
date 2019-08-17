@@ -88,11 +88,13 @@ export default class ApiClient {
 			},
 		});
 
-		if (response.status === 401) {
-			throw new Error('Updown API returned Unauthorized error. Check your API key and try again.');
+		const responseData : any = await response.json();
+
+		if (response.status >= 400 && responseData.error) {
+			throw new Error(`Updown API error: ${ responseData.error }`);
 		}
 
-		return response.json();
+		return responseData;
 	}
 }
 

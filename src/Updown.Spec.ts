@@ -1,3 +1,5 @@
+import Check from './Check';
+
 require('dotenv').config(); // eslint-disable-line @typescript-eslint/no-require-imports
 
 import Updown from './Updown';
@@ -25,12 +27,24 @@ describe('Methods', () => {
 
 describe('Readonly', () => {
 	const ud = new Updown(READONLY_API_KEY);
-	let checks = [];
+	let allChecks : Check[] = [];
 
 	test('Get checks', async () => {
-		checks = await ud.getChecks();
+		const checks = await ud.getChecks();
+
 		expect(Array.isArray(checks)).toBe(true);
 		expect(checks.length).toBeGreaterThan(0);
+		expect(checks[0]).toBeInstanceOf(Check);
+
+		allChecks = checks;
+	});
+
+	test('Get check by token', async () => {
+		await expect(ud.getCheck(allChecks[0].token)).resolves.toBeInstanceOf(Check);
+	});
+
+	test('Get nonexistent check', async () => {
+		await expect(ud.getCheck('a')).rejects.toBeTruthy();
 	});
 });
 
