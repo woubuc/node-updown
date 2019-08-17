@@ -1,5 +1,8 @@
 # node-updown
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
+[![npm](https://img.shields.io/npm/v/node-updown?style=flat-square)](![npm](https://img.shields.io/npm/v/node-updown?style=flat-square))
+[![Travis CI](https://img.shields.io/travis/woubuc/node-updown?style=flat-square)](https://travis-ci.org/woubuc/node-updown)
+[![Contributors](https://img.shields.io/badge/contributors-2-orange?style=flat-square)](#contributors)
+[![MIT license](https://img.shields.io/github/license/woubuc/node-updown?style=flat-square)](https://github.com/woubuc/node-updown/blob/master/LICENSE)
 
 A simple Node.js API wrapper for [updown.io](http://updown.io)
 
@@ -74,8 +77,7 @@ updown.deleteCheck('check_token').then(response => {
 If you have any problems or questions, just create an issue and I will take a look at it asap.
 
 ## Contributors
-
-Thanks goes to these wonderful people ([emoji key][emojis]) ✨
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)) ✨
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -91,13 +93,7 @@ Thanks goes to these wonderful people ([emoji key][emojis]) ✨
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors][all-contributors] specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!
 
 ## LICENSE
-
 This package is licensed under the [MIT license](/LICENSE)
-
-<!-- prettier-ignore-start -->
-[emojis]: https://allcontributors.org/docs/en/emoji-key
-[all-contributors]: https://github.com/all-contributors/all-contributors
-<!-- prettier-ignore-end -->
