@@ -1,39 +1,67 @@
+require('dotenv').config(); // eslint-disable-line @typescript-eslint/no-require-imports
+
 import Updown from './Updown';
-import { MOCK_CHECK_ID } from './__mocks__/ApiClient';
 
-jest.mock('./ApiClient');
+const API_KEY = process.env.UPDOWN_API_KEY;
+if (!API_KEY) throw new Error('Cannot run integration tests without API key');
 
-test('Updown constructor', () => {
+const READONLY_API_KEY = process.env.UPDOWN_READONLY_API_KEY;
+if (!READONLY_API_KEY) throw new Error('Cannot run integration tests without readonly API key');
+
+
+describe('Methods', () => {
 	const ud = new Updown('');
-	expect(ud).toBeTruthy();
+
+	test('Get checks', () => expect(ud).toHaveProperty('getChecks'));
+
+	test('Add check', () => expect(ud).toHaveProperty('addCheck'));
+	test('Modify check', () => expect(ud).toHaveProperty('modifyCheck'));
+	test('Delete check', () => expect(ud).toHaveProperty('deleteCheck'));
+
+	test('Get downtime', () => expect(ud).toHaveProperty('getDowntime'));
+	test('Get metrics', () => expect(ud).toHaveProperty('getMetrics'));
 });
 
-test('Get checks', async () => {
-	const ud = new Updown('');
-	await expect(ud.getChecks()).resolves.toBeTruthy();
+
+describe('Readonly', () => {
+	const ud = new Updown(READONLY_API_KEY);
+	let checks = [];
+
+	test('Get checks', async () => {
+		checks = await ud.getChecks();
+		expect(Array.isArray(checks)).toBe(true);
+		expect(checks.length).toBeGreaterThan(0);
+	});
 });
 
-test('Get downtime', async () => {
-	const ud = new Updown('');
-	await expect(ud.getDowntime(MOCK_CHECK_ID)).resolves.toBeTruthy();
-});
 
-test('Get metrics', async () => {
-	const ud = new Updown('');
-	await expect(ud.getMetrics(MOCK_CHECK_ID)).resolves.toBeTruthy();
-});
+describe('Modify checks', () => {
+	const ud = new Updown(API_KEY);
+	let token = '';
 
-test('Add check', async () => {
-	const ud = new Updown('');
-	await expect(ud.addCheck('', 120)).resolves.toBeTruthy();
-});
+	test('Create check', async () => {
+		const addCheck = ud.addCheck(`https://www.woubuc.be?t=${ Date.now() }`, 3600);
+		await expect(addCheck).resolves.toBeTruthy();
 
-test('Modify check', async () => {
-	const ud = new Updown('');
-	await expect(ud.modifyCheck(MOCK_CHECK_ID, '')).resolves.toBeTruthy();
-});
+		const check : any = await addCheck;
+		expect(check).toHaveProperty('token');
 
-test('Delete check', async () => {
-	const ud = new Updown('');
-	await expect(ud.deleteCheck(MOCK_CHECK_ID)).resolves.toBeTruthy();
+		expect(true).toBe(false);
+		token = check.token;
+	});
+
+	test('Modify check', async () => {
+		expect(token).toBeTruthy();
+
+		const modifyCheck = ud.modifyCheck(token, `https://www.woubuc.be?t=${ Date.now() }`);
+		await expect(modifyCheck).resolves.toBeTruthy();
+	});
+
+	test('Delete check', async () => {
+		expect(token).toBeTruthy();
+
+		const deleteCheck = ud.deleteCheck(token);
+		await expect(deleteCheck).resolves.toBeTruthy();
+	});
+
 });

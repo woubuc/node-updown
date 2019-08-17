@@ -4,5 +4,5 @@ module.exports = {
 	testEnvironment: 'node',
 	rootDir: 'src/',
 
-	testMatch: ['**/?(*.)+(Spec|Ispec).ts'],
+	testMatch: ['**/?(*.)+(Spec).ts'],
 };

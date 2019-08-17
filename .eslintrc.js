@@ -21,13 +21,13 @@ module.exports = {
 		'curly': ['error', 'multi-line'],
 		'indent': ['error', 'tab', { SwitchCase: 1 }],
 		'linebreak-style': 'error',
+		'no-dupe-class-members': 'off',
 		'prefer-const': 'error',
 		'prefer-template': 'error',
 		'quotes': ['error', 'single'],
 		'quote-props': ['error', 'consistent-as-needed'],
 
 		'@typescript-eslint/explicit-function-return-type': 'off',
-		'@typescript-eslint/interface-name-prefix': ['error', { prefixWithI: 'always' }],
 		'@typescript-eslint/no-inferrable-types': ['error', { ignoreParameters: true }],
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/no-require-imports': 'error',
@@ -42,6 +42,7 @@ module.exports = {
 		'@typescript-eslint/type-annotation-spacing': ['error', { before: true }],
 
 		'jsdoc/check-tag-names': ['warn', { definedTags: ['internal'] }],
+		'jsdoc/require-jsdoc': ['warn', { publicOnly: true }],
 		'jsdoc/require-param-type': 'off',
 		'jsdoc/require-returns': 'off',
 

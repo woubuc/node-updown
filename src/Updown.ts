@@ -1,5 +1,5 @@
 import ApiClient from './ApiClient';
-import IApiClient from './IApiClient';
+import Check from './Check';
 
 /** The interval for checks */
 export type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
@@ -9,7 +9,7 @@ export type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
  */
 export default class Updown {
 
-	private readonly client : IApiClient;
+	private readonly client : ApiClient;
 
 	/**
 	 * Initialises the API client
@@ -24,8 +24,14 @@ export default class Updown {
 	/**
 	 * Gets all checks for the user
 	 */
-	public async getChecks() {
-		return this.client.get('checks');
+	public async getChecks() : Promise<Check[]> {
+		const checksData : any = await this.client.get('checks');
+
+		if (!Array.isArray(checksData)) {
+			throw new TypeError(`Received invalid data from API. Expected array, got ${ typeof checksData }`);
+		}
+
+		return checksData.map(data => new Check(data));
 	}
 
 	/**

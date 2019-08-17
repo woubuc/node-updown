@@ -26,15 +26,7 @@ The library and tests are written entirely in Typescript. The code is linted by 
 If there are questions about the code style, feel free to open an issue.
 
 ### Tests
-There are two kinds of tests in this repository: unit tests and integration tests.
-
-- __Unit tests__ are named `*.Spec.ts` and should only test the logic of individual methods and functions. They can test internal functionality but should focus on public methods and exported functions.
-- __Integration tests__ are named `*.Ispec.ts` and should test larger portions of the logic, including communication with the external Updown API.
-
-Generally speaking, there should be many unit tests but only a few integration tests.
-
-#### Testing environment
-To run the integration tests, create a `.env` file in the project root and add two values to it:
+To run the tests, create a `.env` file in the project root and add two values to it:
 
 ```
 UPDOWN_API_KEY=[your key here]
@@ -42,5 +34,7 @@ UPDOWN_READONLY_API_KEY=[your readonly key here]
 ```
 
 You can also add these to your environment variables manually when running the tests. 
+
+The tests expect at least 1 check to exist in the account. During the test, new checks will be created and immediately deleted, but they should not modify any existing tests.
 
 __Warning__: These are your personal API credentials, so take good care not to commit this file to the repository or publish it anywhere.
