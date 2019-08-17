@@ -1,21 +1,12 @@
 import { format } from 'date-fns';
-import fetch from 'node-fetch';
-import * as qs from 'querystring';
+import ApiClient from './ApiClient';
 
 /**
  * Options object used when creating a new Updown API client
  */
-export interface Options {
+export interface IOptions {
 	readOnly ?: boolean;
 }
-
-/** An object with primitive values (i.e. no arrays/objects) */
-interface PrimitiveObject {
-	[key : string] : string | number;
-}
-
-/** An HTTP method */
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 /** The interval for checks */
 export type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
@@ -25,8 +16,7 @@ export type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
  */
 export default class Updown {
 
-	private readonly apiKey : string;
-	private readonly isReadOnly : boolean;
+	private readonly client : ApiClient;
 
 	/**
 	 * Initialises the API client
@@ -34,16 +24,15 @@ export default class Updown {
 	 * @param apiKey  Your Updown API key
 	 * @param config  A configuration object
 	 */
-	constructor(apiKey : string, config : Options = {}) {
-		this.apiKey = apiKey;
-		this.isReadOnly = config.readOnly || false;
+	constructor(apiKey : string, config : IOptions = {}) {
+		this.client = new ApiClient(apiKey, !!config.readOnly);
 	}
 
 	/**
 	 * Gets all checks for the user
 	 */
 	public async getChecks() {
-		return this.get('https://updown.io/api/checks');
+		return this.client.get('https://updown.io/api/checks');
 	}
 
 	/**
@@ -53,7 +42,7 @@ export default class Updown {
 	 * @param [page]  Page number (results are paginated per 100)
 	 */
 	public async getDowntime(token : string, page : number = 1) {
-		return this.get(`https://updown.io/api/checks/${token}/downtimes`, { page });
+		return this.client.get(`https://updown.io/api/checks/${token}/downtimes`, { page });
 	}
 
 	/**
@@ -65,12 +54,12 @@ export default class Updown {
 	 * @param [group]  Grouping to use, either 'time' or 'host'
 	 */
 	public async getMetrics(token : string, from ?: Date, to ?: Date, group : 'time' | 'host' = 'host') {
-		const query : PrimitiveObject = { group };
+		const query : Record<string, any> = { group };
 
 		if (from) query.from = format(from);
 		if (to) query.to = format(to);
 
-		return this.get(`https://updown.io/api/checks/${token}/metrics`, query);
+		return this.client.get(`https://updown.io/api/checks/${token}/metrics`, query);
 	}
 
 	/**
@@ -81,17 +70,13 @@ export default class Updown {
 	 * @param [name]    An alias to recognise this url by
 	 */
 	public async addCheck(url : string, interval : CheckInterval, name ?: string) {
-		if (this.isReadOnly) {
-			throw new Error('Updown is set to read-only mode');
-		}
-
-		const params : PrimitiveObject = {
+		const params : Record<string, any> = {
 			url,
 			period: interval,
 		};
 		if (name) params.name = name;
 
-		return this.req('https://updown.io/api/checks/', 'POST', params);
+		return this.client.post('https://updown.io/api/checks/', params);
 	}
 
 	/**
@@ -103,16 +88,12 @@ export default class Updown {
 	 * @param [name]      A new alias for the check
 	 */
 	public async modifyCheck(token : string, url ?: string, interval ?: CheckInterval, name ?: string) {
-		if (this.isReadOnly) {
-			throw new Error('Updown is set to read-only mode');
-		}
-
-		const params : PrimitiveObject = {};
+		const params : Record<string, any> = {};
 		if (url) params.url = url;
 		if (interval) params.period = interval;
 		if (name) params.name = name;
 
-		return this.req(`https://updown.io/api/checks/${token}`, 'PUT', params);
+		return this.client.put(`https://updown.io/api/checks/${token}`, params);
 	}
 
 	/**
@@ -121,43 +102,7 @@ export default class Updown {
 	 * @param {string} token - Token of the check to delete
 	 */
 	public async deleteCheck(token : string) {
-		if (this.isReadOnly) {
-			throw new Error('Updown is set to read-only mode');
-		}
-
-		return this.req(`https://updown.io/api/checks/${token}`, 'DELETE');
-	}
-	/**
-	 * Loads an URL with the Updown API key header
-	 *
-	 * @param url      The API URL to call
-	 * @param [query]  Parameters to be added to the querystring
-	 */
-	private async get(url : string, query : PrimitiveObject = {}) {
-
-		// Add timestamp to query to prevent caching
-		query._t = new Date().getTime();
-
-		const res = await fetch([url, qs.stringify(query)].join('?'), {
-			headers: { 'X-API-KEY': this.apiKey },
-		});
-		return res.json();
-	}
-
-	/**
-	 *  Posts data to an URL with the Updown API key header
-	 *
-	 *  @param url       The API URL to post to
-	 *  @param [method]  Method for the HTTP request
-	 *  @param [params]  Parameters to be sent in the POST body
-	 */
-	private async req(url : string, method : HttpMethod = 'POST', params : PrimitiveObject = {}) {
-		const res = await fetch(url, {
-			method,
-			body: qs.stringify(params),
-			headers: { 'X-API-KEY': this.apiKey },
-		});
-		return res.json();
+		return this.client.delete(`https://updown.io/api/checks/${token}`);
 	}
 
 }
