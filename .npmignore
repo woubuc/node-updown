@@ -1,2 +1,8 @@
-src
-test
+# Ignore everything, only whitelist /dist/*
+*
+!/dist/*
+
+# Test files should not be included
+/dist/*.spec.*
+/dist/*.ispec.*
+/dist/__mocks__/*

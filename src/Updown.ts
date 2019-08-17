@@ -1,11 +1,12 @@
 import { format } from 'date-fns';
 import ApiClient from './ApiClient';
+import IApiClient from './IApiClient';
 
 /**
  * Options object used when creating a new Updown API client
  */
 export interface IOptions {
-	readOnly ?: boolean;
+	readOnly : boolean;
 }
 
 /** The interval for checks */
@@ -16,7 +17,7 @@ export type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
  */
 export default class Updown {
 
-	private readonly client : ApiClient;
+	private readonly client : IApiClient;
 
 	/**
 	 * Initialises the API client
@@ -24,7 +25,7 @@ export default class Updown {
 	 * @param apiKey  Your Updown API key
 	 * @param config  A configuration object
 	 */
-	constructor(apiKey : string, config : IOptions = {}) {
+	constructor(apiKey : string, config : Partial<IOptions> = {}) {
 		this.client = new ApiClient(apiKey, !!config.readOnly);
 	}
 
@@ -32,7 +33,7 @@ export default class Updown {
 	 * Gets all checks for the user
 	 */
 	public async getChecks() {
-		return this.client.get('https://updown.io/api/checks');
+		return this.client.get('checks');
 	}
 
 	/**
@@ -42,7 +43,7 @@ export default class Updown {
 	 * @param [page]  Page number (results are paginated per 100)
 	 */
 	public async getDowntime(token : string, page : number = 1) {
-		return this.client.get(`https://updown.io/api/checks/${token}/downtimes`, { page });
+		return this.client.get(`checks/${token}/downtimes`, { page });
 	}
 
 	/**
@@ -59,7 +60,7 @@ export default class Updown {
 		if (from) query.from = format(from);
 		if (to) query.to = format(to);
 
-		return this.client.get(`https://updown.io/api/checks/${token}/metrics`, query);
+		return this.client.get(`checks/${token}/metrics`, query);
 	}
 
 	/**
@@ -76,7 +77,7 @@ export default class Updown {
 		};
 		if (name) params.name = name;
 
-		return this.client.post('https://updown.io/api/checks/', params);
+		return this.client.post('checks', params);
 	}
 
 	/**
@@ -93,7 +94,7 @@ export default class Updown {
 		if (interval) params.period = interval;
 		if (name) params.name = name;
 
-		return this.client.put(`https://updown.io/api/checks/${token}`, params);
+		return this.client.put(`checks/${token}`, params);
 	}
 
 	/**
@@ -102,7 +103,7 @@ export default class Updown {
 	 * @param {string} token - Token of the check to delete
 	 */
 	public async deleteCheck(token : string) {
-		return this.client.delete(`https://updown.io/api/checks/${token}`);
+		return this.client.delete(`checks/${token}`);
 	}
 
 }

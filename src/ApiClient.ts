@@ -53,13 +53,17 @@ export default class ApiClient implements IApiClient {
 	 */
 	private async request(method : string, url : string, data ?: Record<string, any>) : Promise<Record<string, any>> {
 		// TODO add error handling in case requests fail
-		const res = await fetch(url, {
+		const response = await fetch(url, {
 			method: method.toString(),
-			body: data ? qs.stringify(data) : '',
+			body: data ? qs.stringify(data) : undefined,
 			headers: { 'X-API-KEY': this.apiKey },
 		});
 
-		return res.json();
+		if (response.status === 401) {
+			throw new Error('Updown API returned Unauthorized error. Check your API key and try again.');
+		}
+
+		return response.json();
 	}
 }
 
