@@ -16,7 +16,7 @@
     "build": "rimraf dist/* && tsc",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "lint": "eslint --ext .ts src/**/* --fix",
+    "lint": "eslint --ext .ts src/**/*",
     "prepack": "run-s build",
     "test": "run-s lint && jest"
   },
