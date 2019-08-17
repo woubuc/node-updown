@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import ApiClient from './ApiClient';
 import IApiClient from './IApiClient';
 
@@ -50,8 +49,8 @@ export default class Updown {
 	public async getMetrics(token : string, from ?: Date, to ?: Date, group : 'time' | 'host' = 'host') {
 		const query : Record<string, any> = { group };
 
-		if (from) query.from = format(from);
-		if (to) query.to = format(to);
+		if (from) query.from = from.toISOString();
+		if (to) query.to = to.toISOString();
 
 		return this.client.get(`checks/${token}/metrics`, query);
 	}
