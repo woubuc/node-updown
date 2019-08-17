@@ -46,7 +46,6 @@ describe('Modify checks', () => {
 		const check : any = await addCheck;
 		expect(check).toHaveProperty('token');
 
-		expect(true).toBe(false);
 		token = check.token;
 	});
 
