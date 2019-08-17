@@ -47,9 +47,9 @@ export default class ApiClient implements IApiClient {
 	/**
 	 * Executes an HTTP request
 	 *
-	 * @param method - HTTP method to use ('GET', 'POST', ...)
-	 * @param url    - The URL
-	 * @param [data] - Data object to be sent along as the request body (will be serialised as a querystring)
+	 * @param method  HTTP method to use ('GET', 'POST', ...)
+	 * @param url     The URL
+	 * @param [data]  Data object to be sent along as the request body (will be serialised as a querystring)
 	 */
 	private async request(method : string, url : string, data ?: Record<string, any>) : Promise<Record<string, any>> {
 		// TODO add error handling in case requests fail
@@ -70,8 +70,8 @@ export default class ApiClient implements IApiClient {
 /**
  * Formats the URL for an API endpoint
  *
- * @param endpoint - The API endpoint (e.g. 'checks')
- * @param [query]  - Query parameters to include in the URL
+ * @param endpoint  The API endpoint (e.g. 'checks')
+ * @param [query]   Query parameters to include in the URL
  */
 function getUrl(endpoint : string, query : Record<string, any> = {}) : string {
 	if (endpoint.startsWith('/')) endpoint = endpoint.slice(1);
