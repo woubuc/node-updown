@@ -1,8 +1,8 @@
 # node-updown
-[![npm](https://img.shields.io/npm/v/node-updown?style=flat-square)](![npm](https://img.shields.io/npm/v/node-updown?style=flat-square))
-[![Travis CI](https://img.shields.io/travis/woubuc/node-updown?style=flat-square)](https://travis-ci.org/woubuc/node-updown)
-[![Contributors](https://img.shields.io/badge/contributors-2-orange?style=flat-square)](#contributors)
-[![MIT license](https://img.shields.io/github/license/woubuc/node-updown?style=flat-square)](https://github.com/woubuc/node-updown/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/node-updown)](![npm](https://img.shields.io/npm/v/node-updown?style=flat-square))
+[![Travis CI](https://img.shields.io/travis/woubuc/node-updown)](https://travis-ci.org/woubuc/node-updown)
+[![Contributors](https://img.shields.io/badge/contributors-2-orange)](#contributors)
+[![MIT license](https://img.shields.io/github/license/woubuc/node-updown)](https://github.com/woubuc/node-updown/blob/master/LICENSE)
 
 A simple Node.js API wrapper for [updown.io](http://updown.io)
 
