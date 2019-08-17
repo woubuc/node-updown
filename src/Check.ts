@@ -21,7 +21,7 @@ export default class Check {
 	readonly url : string;
 
 	/** Alias of this check */
-	readonly alias : string;
+	readonly alias ?: string;
 
 	/** True if this check is enabled */
 	readonly enabled : boolean;
@@ -33,7 +33,7 @@ export default class Check {
 	readonly interval : number;
 
 	/** String that should exist on the page for a successful check */
-	readonly stringMatch : string;
+	readonly stringMatch ?: string;
 
 	/** The HTTP method to use (`http_verb` in the API) */
 	readonly httpMethod : string;
@@ -86,12 +86,12 @@ export default class Check {
 
 		this.token = v.getString('token');
 		this.url = v.getString('url');
-		this.alias = v.getString('alias');
+		this.alias = v.getString('alias', true);
 		this.enabled = v.getBoolean('enabled');
 		this.published = v.getBoolean('published');
 
 		this.interval = v.getNumber('period');
-		this.stringMatch = v.getString('string_match');
+		this.stringMatch = v.getString('string_match', true);
 
 		this.httpMethod = v.getString('http_verb');
 		this.httpBody = v.getString('http_body', true);
