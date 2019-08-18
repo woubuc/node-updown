@@ -32,7 +32,7 @@ For more information on the various API endpoints, see the [Updown API documenta
 #### getChecks()
 Gets all checks.
 ```javascript
-updown.getChecks().then(checks => {
+updown.getAllChecks().then(checks => {
     console.log(checks);
 });
 ```

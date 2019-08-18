@@ -38,7 +38,7 @@ export default class Updown {
 	 *
 	 * @category Readonly
 	 */
-	public async getChecks() : Promise<Check[]> {
+	public async getAllChecks() : Promise<Check[]> {
 		const checksData = await this.client.get('checks');
 
 		if (!Array.isArray(checksData)) {

@@ -21,7 +21,7 @@ if (!READONLY_API_KEY) throw new Error('Cannot run integration tests without rea
 describe('Methods', () => {
 	const ud = new Updown('');
 
-	test('Get checks', () => expect(ud).toHaveProperty('getChecks'));
+	test('Get checks', () => expect(ud).toHaveProperty('getAllChecks'));
 
 	test('Add check', () => expect(ud).toHaveProperty('addCheck'));
 	test('Modify check', () => expect(ud).toHaveProperty('modifyCheck'));
@@ -37,7 +37,7 @@ describe('Read check data (readonly API key)', () => {
 	let allChecks : Check[] = [];
 
 	test('Get checks', async () => {
-		const checks = await ud.getChecks();
+		const checks = await ud.getAllChecks();
 
 		expect(Array.isArray(checks)).toBe(true);
 		expect(checks.length).toBeGreaterThan(0);
