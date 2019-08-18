@@ -4,6 +4,9 @@
 	"out": "docs",
 	"theme": "minimal",
 
+	"categorizeByGroup": true,
+	"categoryOrder": ["Readonly", "Other"],
+
 	"includeDeclarations": true,
 	"excludeExternals": true,
 	"excludePrivate": true,

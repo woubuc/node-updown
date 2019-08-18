@@ -35,6 +35,8 @@ export default class Updown {
 
 	/**
 	 * Gets all checks for the user
+	 *
+	 * @category Readonly
 	 */
 	public async getChecks() : Promise<Check[]> {
 		const checksData = await this.client.get('checks');
@@ -49,6 +51,8 @@ export default class Updown {
 	/**
 	 * Gets a single check
 	 *
+	 * @category Readonly
+	 *
 	 * @param token  The token of the check
 	 */
 	public async getCheck(token : string) : Promise<Check> {
@@ -60,6 +64,8 @@ export default class Updown {
 	/**
 	 * Gets the downtime information for a check
 	 *
+	 * @category Readonly
+	 *
 	 * @param token   Token identifier of the check
 	 * @param [page]  Page number (results are paginated per 100)
 	 */
@@ -67,6 +73,8 @@ export default class Updown {
 
 	/**
 	 * Gets the downtime information for a check
+	 *
+	 * @category Readonly
 	 *
 	 * @param check   The check
 	 * @param [page]  Page number (results are paginated per 100)
@@ -82,7 +90,9 @@ export default class Updown {
 	}
 
 	/**
-	 * Gets metrics for a specific check
+	 * Gets the metrics information for a check
+	 *
+	 * @category Readonly
 	 *
 	 * @param token    The token for a check
 	 * @param [from]   Start date of the metrics
