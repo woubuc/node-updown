@@ -26,6 +26,7 @@ module.exports = {
 		'prefer-template': 'error',
 		'quotes': ['error', 'single'],
 		'quote-props': ['error', 'consistent-as-needed'],
+		'template-curly-spacing': ['error', 'always'],
 
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/no-inferrable-types': ['error', { ignoreParameters: true }],
@@ -41,8 +42,11 @@ module.exports = {
 		'@typescript-eslint/prefer-readonly': 'error',
 		'@typescript-eslint/type-annotation-spacing': ['error', { before: true }],
 
-		'jsdoc/check-tag-names': ['warn', { definedTags: ['internal'] }],
+		// Code is documented using TSDoc which has slightly different
+		// standards and tags, so we need to adapt some JSDOC linter rules
+		'jsdoc/check-tag-names': ['warn', { definedTags: ['internal', 'hidden'] }],
 		'jsdoc/require-jsdoc': ['warn', { publicOnly: true }],
+		'jsdoc/require-param': ['warn', { exemptedBy: ['internal', 'hidden'] }],
 		'jsdoc/require-param-type': 'off',
 		'jsdoc/require-returns': 'off',
 

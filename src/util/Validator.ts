@@ -1,4 +1,3 @@
-// Copied from another project
 // TODO extract this into a separate module?
 
 /** @internal */

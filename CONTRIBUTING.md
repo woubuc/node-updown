@@ -35,6 +35,6 @@ UPDOWN_READONLY_API_KEY=[your readonly key here]
 
 You can also add these to your environment variables manually when running the tests. 
 
-The tests expect at least 1 check to exist in the account. During the test, new checks will be created and immediately deleted, but they should not modify any existing tests.
+The tests are written for a test account with some dummy data so all API endpoints return some data. Specifically, the tests expect 1 check to exist with at least one previous downtime and at least one successful check having been executed.
 
 __Warning__: These are your personal API credentials, so take good care not to commit this file to the repository or publish it anywhere.

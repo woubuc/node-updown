@@ -1,8 +1,15 @@
-import Check from './Check';
+/* This test file contains mostly overarching tests (i.e. integration tests)
+ * that test the actual API interactions as a user of the library would. See
+ * the CONTRIBUTING.md file for more information about how to add your API keys
+ * and what data the tests expect in the connected account.
+ */
 
 require('dotenv').config(); // eslint-disable-line @typescript-eslint/no-require-imports
 
+import Check from './Check';
 import Updown from './Updown';
+import Downtime from './Downtime';
+
 
 const API_KEY = process.env.UPDOWN_API_KEY;
 if (!API_KEY) throw new Error('Cannot run integration tests without API key');
@@ -25,7 +32,7 @@ describe('Methods', () => {
 });
 
 
-describe('Readonly', () => {
+describe('Read check data (readonly API key)', () => {
 	const ud = new Updown(READONLY_API_KEY);
 	let allChecks : Check[] = [];
 
@@ -46,10 +53,28 @@ describe('Readonly', () => {
 	test('Get nonexistent check', async () => {
 		await expect(ud.getCheck('a')).rejects.toBeTruthy();
 	});
+
+	test('Get downtime by token', async () => {
+		const downtime = await ud.getDowntime(allChecks[0].token);
+
+		expect(Array.isArray(downtime)).toBe(true);
+		expect(downtime[0]).toBeInstanceOf(Downtime);
+	});
+
+	test('Get downtime by check', async () => {
+		const downtime = await ud.getDowntime(allChecks[0]);
+
+		expect(Array.isArray(downtime)).toBe(true);
+		expect(downtime[0]).toBeInstanceOf(Downtime);
+	});
+
+	test('Get downtime by invalid token', async () => {
+		await expect(ud.getDowntime('a')).rejects.toThrow();
+	});
 });
 
 
-describe('Modify checks', () => {
+describe('Create and modify checks (full access API key)', () => {
 	const ud = new Updown(API_KEY);
 	let token = '';
 

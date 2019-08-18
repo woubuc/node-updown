@@ -1,5 +1,6 @@
 import ApiClient from './ApiClient';
 import Check from './Check';
+import Downtime from './Downtime';
 
 /** The interval for checks */
 export type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
@@ -46,13 +47,28 @@ export default class Updown {
 	}
 
 	/**
-	 * Gets downtime information about a specific check
+	 * Gets the downtime information for a check
 	 *
-	 * @param token   The token for a check
+	 * @param check   The check
 	 * @param [page]  Page number (results are paginated per 100)
 	 */
-	public async getDowntime(token : string, page : number = 1) {
-		return this.client.get(`checks/${token}/downtimes`, { page });
+	public async getDowntime(check : Check, page ?: number) : Promise<Downtime[]>;
+
+	/**
+	 * Gets the downtime information for a check
+	 *
+	 * @param token   Token identifier of the check
+	 * @param [page]  Page number (results are paginated per 100)
+	 */
+	public async getDowntime(token : string, page ?: number) : Promise<Downtime[]>;
+
+	/** @hidden */
+	public async getDowntime(tokenOrCheck : Check | string, page : number = 1) : Promise<Downtime[]> {
+		const token = getToken(tokenOrCheck);
+
+		const downtimes : any[] = await this.client.get(`checks/${ token }/downtimes`, { page });
+
+		return downtimes.map(data => new Downtime(token, data));
 	}
 
 	/**
@@ -69,7 +85,7 @@ export default class Updown {
 		if (from) query.from = from.toISOString();
 		if (to) query.to = to.toISOString();
 
-		return this.client.get(`checks/${token}/metrics`, query);
+		return this.client.get(`checks/${ token }/metrics`, query);
 	}
 
 	/**
@@ -103,7 +119,7 @@ export default class Updown {
 		if (interval) params.period = interval;
 		if (name) params.name = name;
 
-		return this.client.put(`checks/${token}`, params);
+		return this.client.put(`checks/${ token }`, params);
 	}
 
 	/**
@@ -112,9 +128,19 @@ export default class Updown {
 	 * @param {string} token - Token of the check to delete
 	 */
 	public async deleteCheck(token : string) {
-		return this.client.delete(`checks/${token}`);
+		return this.client.delete(`checks/${ token }`);
 	}
 
 }
 
 module.exports = Updown;
+
+/**
+ * Takes a token or check parameter and returns the token
+ *
+ * @param tokenOrCheck - String token or Check instance
+ */
+function getToken(tokenOrCheck : string | Check) : string {
+	if (tokenOrCheck instanceof Check) return tokenOrCheck.token;
+	return tokenOrCheck;
+}
