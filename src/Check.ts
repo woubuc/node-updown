@@ -1,83 +1,178 @@
 import Validator from './util/Validator';
 
-interface CheckSslStatus {
+/**
+ * An object containing the SSL status of a check, if an SSL certificate was
+ * detected at the given URL.
+ *
+ * @see {@link Check.ssl}
+ */
+export interface CheckSslStatus {
 	readonly tested : Date;
 	readonly valid : boolean;
 	readonly error ?: string;
 }
 
-// TODO make this an enum
-export type CheckLocation = 'lan' | 'mia' | 'bhs' | 'rbx' | 'fra' | 'sin' | 'tok' | 'syd';
+/**
+ * The possible locations of a check
+ */
+export type CheckLocation = 'lan' | 'mia' | 'bhs' | 'rbx' | 'fra' | 'sin' | 'tok' | 'syd'; // TODO make this an enum
 
 /**
- * A single Updown check
+ * Represents an Updown check
+ *
+ * ### Naming
+ * The properties of the Check class are mapped directly onto the fields
+ * returned by the API. However, the naming is changed slightly from
+ * `snake_case` to `camelCase` because it is the standard in Javascript.
+ *
+ * Additionally, some properties have been renamed for clarity according to my
+ * personal preference.
+ *
+ * The original field names are listed in the description of each property if
+ * they are different.
  */
 export default class Check {
 
-	/** The check's unique identifier token */
+	/**
+	 * The check's unique identifier token
+	 */
 	readonly token : string;
 
-	/** The URL to check */
+	/**
+	 * The URL to check
+	 */
 	readonly url : string;
 
-	/** Alias of this check */
+	/**
+	 * Custom alias of this check
+	 */
 	readonly alias ?: string;
 
-	/** True if this check is enabled */
+	/**
+	 * True if this check is enabled
+	 */
 	readonly enabled : boolean;
 
-	/** True if this check's status page is publicly available */
+	/**
+	 * True if this check's status page is publicly available
+	 */
 	readonly published : boolean;
 
-	/** The interval between checks (`period` in the API) */
+	/**
+	 * The interval between checks
+	 *
+	 * @remarks Corresponds to the `period` field of the API
+	 */
 	readonly interval : number;
 
-	/** String that should exist on the page for a successful check */
+	/**
+	 * String that should exist on the page for a successful check
+	 *
+	 * @remarks Corresponds to the `string_match` field of the API
+	 */
 	readonly stringMatch ?: string;
 
-	/** The HTTP method to use (`http_verb` in the API) */
+	/**
+	 * The HTTP method to use for check requests
+	 *
+	 * @remarks Corresponds to the `http_verb` field of the API
+	 */
 	readonly httpMethod : string;
 
-	/** Body to send with check requests (not applicable for checks with GET/HEAD method) */
+	/**
+	 * Body data to send with check requests
+	 *
+	 * Not applicable for checks with GET/HEAD method
+	 *
+	 * @remarks Corresponds to the `http_body` field of the API
+	 */
 	readonly httpBody ?: string;
 
-	/** Custom headers to send with check requests */
+	/**
+	 * Custom headers to send with check requests
+	 *
+	 * @remarks Corresponds to the `custom_headers` field of the API
+	 */
 	readonly customHeaders : Record<string, string>;
 
-	/** Disabled monitoring locations */
+	/**
+	 * Contains the identifiers of the disabled monitoring locations
+	 *
+	 * @see {@link CheckLocation}
+	 *
+	 * @remarks Corresponds to the `disabled_locations` field of the API
+	 */
 	readonly disabledLocations : CheckLocation[];
 
-	/** URL to the site's favicon, if one was found */
+	/**
+	 * URL to the site's favicon, if one was found
+	 *
+	 * @remarks Corresponds to the `favicon_url` field of the API
+	 */
 	readonly favicon ?: string;
 
-	/** Last received status */
+	/**
+	 * Last received HTTP status
+	 *
+	 * @remarks Corresponds to the `last_status` field of the API
+	 */
 	readonly lastStatus ?: number;
 
-	/** Uptime percentage between 0-100 */
+	/**
+	 * Uptime percentage as a number between 0-100
+	 */
 	readonly uptime : number;
 
-	/** Apdex target, in seconds */
+	/**
+	 * Apdex target in seconds
+	 *
+	 * @remarks Corresponds to the `apdex_t` field of the API
+	 */
 	readonly apdexTarget : number;
 
-	/** When the last check was executed */
+	/**
+	 * When the last check was executed
+	 *
+	 * @remarks Corresponds to the `last_check` field of the API
+	 */
 	readonly lastCheck ?: Date;
 
-	/** When the next check is scheduled */
+	/**
+	 * When the next check is scheduled
+	 *
+	 * @remarks Corresponds to the `next_check` field of the API
+	 */
 	readonly nextCheck : Date;
 
-	/** If set, notifications about the current status are muted until this date */
+	/**
+	 * If set, notifications about this check are muted until this date
+	 *
+	 * @remarks Corresponds to the `mute_until` field of the API
+	 */
 	readonly muteUntil ?: Date;
 
-	/** True if the URL is down */
+	/**
+	 * Will be true if this URL is down
+	 *
+	 * @remarks If true, {@link downSince} and {@link error} should be set
+	 */
 	readonly down : boolean;
 
-	/** If down is true, will contain the time when the URL went down */
+	/**
+	 * The time when the URL went down, if {@link down} is true
+	 *
+	 * @remarks Corresponds to the `down_since` field of the API
+	 */
 	readonly downSince ?: Date;
 
-	/** If down is true, the corresponding error message */
+	/**
+	 * The corresponding error message if {@link down} is true
+	 */
 	readonly error ?: string;
 
-	/** The SSL status of the URL */
+	/**
+	 * The SSL status of the URL, if an SSL certificate was found on the URL
+	 */
 	readonly ssl ?: CheckSslStatus;
 
 	/** @internal */

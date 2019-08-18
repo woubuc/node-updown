@@ -1,0 +1,13 @@
+{
+	"name": "node-updown",
+	"mode": "file",
+	"out": "docs",
+	"theme": "minimal",
+
+	"includeDeclarations": true,
+	"excludeExternals": true,
+	"excludePrivate": true,
+	"excludeNotExported": true,
+
+	"exclude": ["**/*.Spec.ts"]
+}

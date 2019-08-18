@@ -6,7 +6,7 @@ import Downtime from './Downtime';
 export type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
 
 /**
- * API client for the updown.io service
+ * The main API client
  */
 export default class Updown {
 
@@ -16,8 +16,19 @@ export default class Updown {
 	 * Initialises the API client
 	 *
 	 * @param apiKey    Your Updown API key
-	 * @param readonly  True if the given API key is readonly
+	 * @param readonly  Set to true if the API key is a readonly key, the
+	 *                  client will prevent you from doing anything other
+	 *                  than GET requests
 	 */
+	constructor(apiKey : string, readonly : boolean);
+
+	/**
+	 * Initialises the API client
+	 *
+	 * @param apiKey    Your Updown API key
+	 */
+	constructor(apiKey : string);
+
 	constructor(apiKey : string, readonly : boolean = false) {
 		this.client = new ApiClient(apiKey, readonly);
 	}
@@ -49,20 +60,19 @@ export default class Updown {
 	/**
 	 * Gets the downtime information for a check
 	 *
-	 * @param check   The check
-	 * @param [page]  Page number (results are paginated per 100)
-	 */
-	public async getDowntime(check : Check, page ?: number) : Promise<Downtime[]>;
-
-	/**
-	 * Gets the downtime information for a check
-	 *
 	 * @param token   Token identifier of the check
 	 * @param [page]  Page number (results are paginated per 100)
 	 */
 	public async getDowntime(token : string, page ?: number) : Promise<Downtime[]>;
 
-	/** @hidden */
+	/**
+	 * Gets the downtime information for a check
+	 *
+	 * @param check   The check
+	 * @param [page]  Page number (results are paginated per 100)
+	 */
+	public async getDowntime(check : Check, page ?: number) : Promise<Downtime[]>;
+
 	public async getDowntime(tokenOrCheck : Check | string, page : number = 1) : Promise<Downtime[]> {
 		const token = getToken(tokenOrCheck);
 

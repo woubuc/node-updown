@@ -10,7 +10,7 @@
 
 		"outDir": "dist",
 		"rootDir": "src",
-		"removeComments": true,
+		"removeComments": false,
 		"stripInternal": true,
 
 		"strict": true,

@@ -44,7 +44,7 @@ module.exports = {
 
 		// Code is documented using TSDoc which has slightly different
 		// standards and tags, so we need to adapt some JSDOC linter rules
-		'jsdoc/check-tag-names': ['warn', { definedTags: ['internal', 'hidden'] }],
+		'jsdoc/check-tag-names': ['warn', { definedTags: ['internal', 'hidden', 'remarks'] }],
 		'jsdoc/require-jsdoc': ['warn', { publicOnly: true }],
 		'jsdoc/require-param': ['warn', { exemptedBy: ['internal', 'hidden'] }],
 		'jsdoc/require-param-type': 'off',
