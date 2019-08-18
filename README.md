@@ -111,4 +111,4 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!
 
 ## LICENSE
-This package is licensed under the [MIT license](/LICENSE)
+This package is licensed under the [MIT license](https://github.com/woubuc/node-updown/blob/master/LICENSE)
