@@ -20,6 +20,7 @@
     "docs:cleanup": "rimraf dist/* docs/*",
     "docs:declarations": "tsc --emitDeclarationOnly --declarationMap false --skipLibCheck",
     "docs:generate": "typedoc --options typedoc.json dist/",
+    "docs:readme": "(echo # Documentation && echo See https://woubuc.github.io/node-updown) > docs/README.md",
     "lint": "eslint --ext .ts src/**/*",
     "prepack": "run-s test build",
     "test": "run-s lint && jest"

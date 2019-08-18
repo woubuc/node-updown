@@ -25,6 +25,8 @@ const updown = new Updown('READONLY_API_KEY', true);
 All methods in the Updown class return promises.
 
 ## Methods
+Find the generated API documentation at [woubuc.github.io/node-updown](https://woubuc.github.io/node-updown)
+
 For more information on the various API endpoints, see the [Updown API documentation](https://updown.io/api)
 
 #### getChecks()
