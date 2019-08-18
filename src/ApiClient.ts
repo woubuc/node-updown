@@ -47,7 +47,8 @@ export default class ApiClient {
 	/**
 	 * Executes a PUT request to the given API endpoint
 	 *
-	 * @see IApiClient.post
+	 * @param endpoint  The API endpoint
+	 * @param data      Data object to be sent along as the request body (will be serialised as a querystring)
 	 */
 	public put<T>(endpoint : string, data : Record<string, any>) : Promise<T> {
 		if (this.readonly) {
