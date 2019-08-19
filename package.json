@@ -11,7 +11,7 @@
     "url": "https://github.com/woubuc/node-updown/issues"
   },
   "version": "0.2.2",
-  "main": "dist/Updown.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rimraf dist/* && tsc",
     "contributors:add": "all-contributors add",

@@ -8,89 +8,14 @@
 A simple Node.js API wrapper for [updown.io](http://updown.io)
 
 ```
-npm install node-updown
+yarn add node-updown
 ```
 
 # Usage
-Simply create a new Updown instance:
-```javascript
-import Updown from 'node-updown';
-const updown = new Updown('API_KEY');
-```
-
-To use a readonly key, set the second parameter to `true`:
-```javascript
-const updown = new Updown('READONLY_API_KEY', true);
-```
-
-All methods in the Updown class return promises.
-
-## Methods
-Find the generated API documentation at [woubuc.github.io/node-updown](https://woubuc.github.io/node-updown)
-
-For more information on the various API endpoints, see the [Updown API documentation](https://updown.io/api)
-
-#### getChecks()
-Gets all checks.
-```javascript
-updown.getAllChecks().then(checks => {
-    console.log(checks);
-});
-```
-
-#### getCheck(token)
-Gets a single check.
-```javascript
-updown.getCheck('check_token').then(check => {
-    console.log(check);
-});
-```
-
-#### getDowntime(token [, page])
-Gets downtime information for a check.
-```javascript
-updown.getDowntime('check_token').then(downtime => {
-    console.log(downtime);
-});
-```
-
-#### getMetrics(token [, from][, to][, sortByTime])
-Gets all metrics for a check. Parameters `from` and `to` are timestamps in milliseconds (e.g. from `Date.getTime()`).
-```javascript
-updown.getMetrics('check_token').then(metrics => {
-    console.log(metrics);
-});
-```
-
-#### addCheck (url [, interval][, name])
-Adds a new check. Parameter `interval` can be 15, 30, 60, 120, 300, 600, 1800 or 3600.
-```javascript
-// Add a check for http://example.com with 10 minute interval
-updown.addCheck('http://example.com', 600).then(newCheck => {
-    console.log(newCheck);
-});
-```
-
-#### modifyCheck (token [, url][, interval][, name])
-Modifies a check.
-```javascript
-// Change a check to 5 minute interval
-updown.modifyCheck('check_token', null, 300).then(modifiedCheck => {
-    console.log(modifiedCheck);
-});
-```
-
-#### deleteCheck (token)
-Deletes a check.
-```javascript
-// Change a check to 5 minute interval
-updown.deleteCheck('check_token').then(response => {
-    console.log(response.deleted);
-});
-```
+See the [generated documentation](https://woubuc.github.io/node-updown/classes/updown.html)
 
 ## Issues
-If you have any problems or questions, just create an issue and I will take a look at it asap.
+If you experience any bugs or errors, or if you have any questions about how to use this package, be sure to create an issue.
 
 ## Contributors
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)) ✨

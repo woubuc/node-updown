@@ -1,5 +1,6 @@
 import qs from 'querystring';
 import fetch from 'node-fetch';
+import UpdownConfig from './UpdownConfig';
 
 /**
  * The API client handles the actual communication with the Updown API. It
@@ -11,10 +12,12 @@ export default class ApiClient {
 
 	private readonly apiKey : string;
 	private readonly readonly : boolean;
+	private readonly verbose : boolean;
 
-	public constructor(apiKey : string, readonly : boolean) {
+	public constructor(apiKey : string, config : UpdownConfig) {
 		this.apiKey = apiKey;
-		this.readonly = readonly;
+		this.readonly = config.readonly;
+		this.verbose = config.verbose;
 	}
 
 	/**
@@ -80,6 +83,12 @@ export default class ApiClient {
 	 */
 	private async request<T>(method : string, url : string, data ?: Record<string, any>) : Promise<T> {
 		// TODO add error handling in case requests fail
+
+		if (this.verbose) {
+			console.log('[Updown/ApiClient] Executing %s request to %s', method, url);
+			if (data) console.log('[Updown/ApiClient] Body data:', data);
+		}
+
 		const response = await fetch(url, {
 			method: method.toString(),
 			body: data ? JSON.stringify(data) : undefined,
