@@ -13,6 +13,9 @@
 import Updown, { MetricsGrouping } from './Updown';
 import Check from './Check';
 import Downtime from './Downtime';
+import Metrics from './metrics/Metrics';
+import TimeGroupedMetrics from './metrics/TimeGroupedMetrics';
+import HostGroupedMetrics from './metrics/HostGroupedMetrics';
 
 // The default export is the main class, which should be the only necessary
 // entity for most applications
@@ -23,11 +26,15 @@ module.exports = Updown;
 export {
 	Check,
 	Downtime,
-
-	MetricsGrouping,
+	Metrics,
+	HostGroupedMetrics,
+	TimeGroupedMetrics,
+	MetricsGrouping
 };
 
 module.exports.Check = Check;
 module.exports.Downtime = Downtime;
-
+module.exports.Metrics = Metrics;
+module.exports.HostGroupedMetrics = HostGroupedMetrics;
+module.exports.TimeGroupedMetrics = TimeGroupedMetrics;
 module.exports.MetricsGrouping = MetricsGrouping;

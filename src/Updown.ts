@@ -1,24 +1,18 @@
 import ApiClient from './ApiClient';
 import Check from './Check';
 import Downtime from './Downtime';
-import Metrics from './Metrics';
+import Metrics from './metrics/Metrics';
+import TimeGroupedMetrics from './metrics/TimeGroupedMetrics';
+import HostGroupedMetrics from './metrics/HostGroupedMetrics';
 import UpdownConfig, { parseConfig } from './UpdownConfig';
 
 /** The interval for checks */
 type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
 
-/**
- * Defines how metrics data is grouped when calling {@link Updown.getMetrics}
- */
 export enum MetricsGrouping {
-	/** No grouping, all metrics data will be in a single object */
-	None = 'none',
-
-	/** Group results per hour */
-	Time = 'time',
-
-	/** Group results per monitoring location */
-	Host = 'host',
+	None,
+	Time,
+	Host,
 }
 
 /**
@@ -56,6 +50,7 @@ export enum MetricsGrouping {
 export default class Updown {
 
 	private readonly client : ApiClient;
+	private readonly verbose : boolean;
 
 	/**
 	 * Initialises the API client
@@ -76,6 +71,15 @@ export default class Updown {
 		const config = parseConfig(userConfig);
 
 		this.client = new ApiClient(apiKey, config);
+		this.verbose = config.verbose;
+
+		if (config.verbose) {
+			if (config.readonly) {
+				console.log('[Updown] Initialised in read-only mode');
+			} else {
+				console.log('[Updown] Initialised');
+			}
+		}
 	}
 
 
@@ -83,13 +87,17 @@ export default class Updown {
 	/**
 	 * Gets all checks for the user
 	 *
-	 * @category Readonly
-	 *
 	 * ```typescript
 	 * const checks = await updown.getAllChecks();
 	 * ```
+	 *
+	 * @category Readonly
 	 */
 	public async getAllChecks() : Promise<Check[]> {
+		if (this.verbose) {
+			console.log('[Updown] Getting all checks');
+		}
+
 		const checksData = await this.client.get('checks');
 
 		if (!Array.isArray(checksData)) {
@@ -104,15 +112,19 @@ export default class Updown {
 	/**
 	 * Gets a single check
 	 *
-	 * @category Readonly
-	 *
 	 * ```typescript
 	 * const check = await updown.getCheck('MY_TOKEN');
 	 * ```
 	 *
+	 * @category Readonly
+	 *
 	 * @param token  The token of the check
 	 */
 	public async getCheck(token : string) : Promise<Check> {
+		if (this.verbose) {
+			console.log('[Updown] Getting check with token %s', token);
+		}
+
 		const checkData = await this.client.get(`checks/${ token }`);
 
 		return new Check(checkData);
@@ -123,35 +135,20 @@ export default class Updown {
 	/**
 	 * Gets the downtime information for a check
 	 *
-	 * @category Readonly
-	 *
 	 * ```typescript
 	 * const page1 = await updown.getDowntime('MY_TOKEN');
 	 * const page2 = await updown.getDowntime('MY_TOKEN', 2);
 	 * ```
 	 *
-	 * @param token   Token identifier of the check
-	 * @param [page]  Page number (results are paginated per 100)
+	 * @category Readonly
+	 *
+	 * @param token  Token identifier of the check
+	 * @param page   Page number (results are paginated per 100)
 	 */
-	public async getDowntime(token : string, page ?: number) : Promise<Downtime[]>;
-
-	/**
-	 * Gets the downtime information for a check
-	 *
-	 * ```typescript
-	 * const check = await updown.getCheck('MY_TOKEN');
-	 *
-	 * const page1 = await updown.getDowntime(check);
-	 * const page2 = await updown.getDowntime(check, 2);
-	 * ```
-	 *
-	 * @param check   The check
-	 * @param [page]  Page number (results are paginated per 100)
-	 */
-	public async getDowntime(check : Check, page ?: number) : Promise<Downtime[]>;
-
-	public async getDowntime(tokenOrCheck : Check | string, page : number = 1) : Promise<Downtime[]> {
-		const token = getToken(tokenOrCheck);
+	public async getDowntime(token : string, page : number = 1) : Promise<Downtime[]> {
+		if (this.verbose) {
+			console.log('[Updown] Getting downtime for check with token %s', token);
+		}
 
 		const downtimes : any[] = await this.client.get(`checks/${ token }/downtimes`, { page });
 
@@ -161,7 +158,13 @@ export default class Updown {
 
 
 	/**
-	 * Gets the metrics information for a check during a given time period
+	 * Gets the metrics information for a check during a given time period,
+	 * grouped by host
+	 *
+	 * ```typescript
+	 * const metrics = await updown.getMetrics('MY_TOKEN', MetricsGrouping.Host);
+	 * const metricsLastYear = await updown.getMetrics('MY_TOKEN', MetricsGrouping.Host, new Date('2018/01/01'), new Date('2018/12/31'));
+	 * ```
 	 *
 	 * @remarks As noted in the Updown API documentation, statistic are
 	 * aggregated per hour. Requesting any time interval smaller than one hour
@@ -169,83 +172,115 @@ export default class Updown {
 	 *
 	 * @category Readonly
 	 *
-	 * ```typescript
-	 * const year = await updown.getMetrics('MY_TOKEN', new Date('2018/01/01'), new Date('2018/12/31'));
-	 * const groupedByHost = await updown.getMetrics('MY_TOKEN', new Date('2018/01/01'), new Date('2018/12/31'), MetricsGrouping.Host);
-	 * ```
-	 *
-	 * @param token    Token identifier of the check
-	 * @param from     Request metrics starting from this date
-	 * @param to       Request methods up until this date
-	 * @param [group]  How to group the returned metrics (defaults to no grouping)
+	 * @param token  Token identifier of the check
+	 * @param group  How to group the results
+	 * @param from   Request metrics starting from this date (defaults to 1 month ago)
+	 * @param to     Request methods up until this date (defaults to now)
 	 */
-	public async getMetrics(token : string, from : Date, to : Date, group ?: MetricsGrouping) : Promise<any>;
+	public async getMetrics(token : string, group : MetricsGrouping.Host, from ?: Date, to ?: Date) : Promise<HostGroupedMetrics[]>;
 
 	/**
-	 * Gets the metrics information for a check during a given time period
+	 * Gets the metrics information for a check during a given time period,
+	 * grouped by time
+	 *
+	 * ```typescript
+	 * const metrics = await updown.getMetrics('MY_TOKEN', MetricsGrouping.Time);
+	 * const metricsLastYear = await updown.getMetrics('MY_TOKEN', MetricsGrouping.Time, new Date('2018/01/01'), new Date('2018/12/31'));
+	 * ```
 	 *
 	 * @remarks As noted in the Updown API documentation, statistic are
 	 * aggregated per hour. Requesting any time interval smaller than one hour
 	 * may not return any values.
 	 *
-	 * ```typescript
-	 * const check = await updown.getCheck('MY_TOKEN');
-	 *
-	 * const year = await updown.getMetrics(check, new Date('2018/01/01'), new Date('2018/12/31'));
-	 * const groupedByTime = await updown.getMetrics(check, new Date('2018/01/01'), new Date('2018/12/31'), MetricsGrouping.Time);
-	 * ```
-	 *
-	 * @param check    The check
-	 * @param from     Request metrics starting from this date
-	 * @param to       Request methods up until this date
-	 * @param [group]  How to group the returned metrics (defaults to no grouping)
+	 * @param token  Token identifier of the check, or the check instance
+	 * @param group  How to group the results
+	 * @param from   Request metrics starting from this date (defaults to 1 month ago)
+	 * @param to     Request methods up until this date (defaults to now)
 	 */
-	public async getMetrics(check : Check, from : Date, to : Date, group ?: MetricsGrouping) : Promise<any>;
+	public async getMetrics(token : string, group : MetricsGrouping.Time, from ?: Date, to ?: Date) : Promise<TimeGroupedMetrics[]>;
 
 	/**
-	 * Gets the metrics information for a check in the last month
+	 * Gets the metrics information for a check during a given time period
+	 *
+	 * ```typescript
+	 * const metrics = await updown.getMetrics('MY_TOKEN', MetricsGrouping.None);
+	 * const metricsLastYear = await updown.getMetrics('MY_TOKEN', MetricsGrouping.None, new Date('2018/01/01'), new Date('2018/12/31'));
+	 * ```
+	 *
+	 * @remarks As noted in the Updown API documentation, statistic are
+	 * aggregated per hour. Requesting any time interval smaller than one hour
+	 * may not return any values.
+	 *
+	 * @param token  Token identifier of the check, or the check instance
+	 * @param group  How to group the results
+	 * @param from   Request metrics starting from this date (defaults to 1 month ago)
+	 * @param to     Request methods up until this date (defaults to now)
+	 *
+	 * @returns Returns the Metrics instance, or undefined if no metrics were found
+	 *          for the given check (e.g. when the check was not monitored during
+	 *          the given time period)
+	 */
+	public async getMetrics(token : string, group : MetricsGrouping.None, from ?: Date, to ?: Date) : Promise<Metrics | undefined>;
+
+	/**
+	 * Gets the metrics information for a check during a given time period
 	 *
 	 * ```typescript
 	 * const metrics = await updown.getMetrics('MY_TOKEN');
-	 * const groupedByHost = await updown.getMetrics('MY_TOKEN', MetricsGrouping.Host);
+	 * const metricsLastYear = await updown.getMetrics('MY_TOKEN', new Date('2018/01/01'), new Date('2018/12/31'));
 	 * ```
 	 *
-	 * @param token    Token identifier of the check
-	 * @param [group]  How to group the returned metrics (defaults to no grouping)
+	 * @remarks As noted in the Updown API documentation, statistic are
+	 * aggregated per hour. Requesting any time interval smaller than one hour
+	 * may not return any values.
+	 *
+	 * @param token  Token identifier of the check, or the check instance
+	 * @param from   Request metrics starting from this date (defaults to 1 month ago)
+	 * @param to     Request methods up until this date (defaults to now)
+	 *
+	 * @returns Returns the Metrics instance, or undefined if no metrics were found
+	 *          for the given check (e.g. when the check was not monitored during
+	 *          the given time period)
 	 */
-	public async getMetrics(token : string, group ?: MetricsGrouping) : Promise<any>;
+	public async getMetrics(token : string, from ?: Date, to ?: Date) : Promise<Metrics | undefined>;
 
-	/**
-	 * Gets the metrics information for a check in the last month
-	 *
-	 * ```typescript
-	 * const check = await updown.getCheck('MY_TOKEN');
-	 *
-	 * const metrics = await updown.getMetrics(check);
-	 * const groupedByHost = await updown.getMetrics(check, MetricsGrouping.Host);
-	 * ```
-	 *
-	 * @param check    The check
-	 * @param [group]  How to group the returned metrics (defaults to no grouping)
-	 */
-	public async getMetrics(check : Check, group ?: MetricsGrouping) : Promise<any>;
-
-	public async getMetrics(tokenOrCheck : string | Check, fromOrGroup ?: Date | MetricsGrouping, to ?: Date, group ?: MetricsGrouping) : Promise<any> {
-		let from : Date | undefined = undefined;
-		if (fromOrGroup instanceof Date) {
-			from = fromOrGroup;
-		} else {
-			group = fromOrGroup;
+	public async getMetrics(token : string, group ?: MetricsGrouping | Date, from ?: Date, to ?: Date) : Promise<Metrics | HostGroupedMetrics[] | TimeGroupedMetrics[] | undefined> {
+		if (group instanceof Date) {
+			to = from;
+			from = group;
+			group = MetricsGrouping.None;
 		}
 
-		const token = getToken(tokenOrCheck);
+		let groupValue : string | undefined = undefined;
+		if (group === MetricsGrouping.Host) groupValue = 'host';
+		else if (group === MetricsGrouping.Time) groupValue = 'time';
+
+		if (this.verbose) {
+			if (groupValue) {
+				console.log('[Updown] Getting metrics for check with token %s, grouped by %s', token, groupValue);
+			} else {
+				console.log('[Updown] Getting metrics for check with token %s', token);
+			}
+		}
 
 		const query : Record<string, any> = {};
-		if (group && group !== MetricsGrouping.None) query.group = group.toString();
+		if (groupValue) query.group = groupValue;
 		if (from) query.from = from.toISOString();
 		if (to) query.to = to.toISOString();
 
-		return this.client.get(`checks/${ token }/metrics`, query);
+		const metricsData = await this.client.get<Record<string, any>>(`checks/${ token }/metrics`, query);
+
+		if (group === MetricsGrouping.Host) {
+			return Object.keys(metricsData).map(host => new HostGroupedMetrics(host, metricsData[host]));
+		}
+
+		if (group === MetricsGrouping.Time) {
+			return Object.keys(metricsData).map(time => new TimeGroupedMetrics(time, metricsData[time]));
+		}
+
+		if (Object.keys(metricsData).length === 0) return undefined;
+
+		return new Metrics(metricsData);
 	}
 
 
@@ -293,14 +328,4 @@ export default class Updown {
 		return this.client.delete(`checks/${ token }`);
 	}
 
-}
-
-/**
- * Takes a token or check parameter and returns the token
- *
- * @param tokenOrCheck - String token or Check instance
- */
-function getToken(tokenOrCheck : string | Check) : string {
-	if (tokenOrCheck instanceof Check) return tokenOrCheck.token;
-	return tokenOrCheck;
 }
