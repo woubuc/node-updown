@@ -246,6 +246,7 @@ export default class Updown {
 
 	public async getMetrics(token : string, group ?: MetricsGrouping | Date, from ?: Date, to ?: Date) : Promise<Metrics | HostGroupedMetrics[] | TimeGroupedMetrics[] | undefined> {
 		if (group instanceof Date) {
+			// The grouping argument is skipped, so the other args shift one to the left
 			return this._getMetrics(token, MetricsGrouping.None, group, from);
 		}
 
@@ -259,13 +260,16 @@ export default class Updown {
 	/** @internal */
 	private async _getMetrics(token : string, group : MetricsGrouping, from ?: Date, to ?: Date) : Promise<Metrics | HostGroupedMetrics[] | TimeGroupedMetrics[] | undefined> {
 		if (this.verbose) {
-			if (group !== MetricsGrouping.None) {
-				console.log('[Updown] Getting metrics for check with token %s, grouped by %s', token, group.toString());
-			} else {
+			if (group === MetricsGrouping.None) {
 				console.log('[Updown] Getting metrics for check with token %s', token);
+			} else {
+				console.log('[Updown] Getting metrics for check with token %s, grouped by %s', token, group.toString());
 			}
 		}
 
+		// Query should only contain the fields that are actually set, since
+		// the Updown API will apply the default values if the fields aren't
+		// set in the querystring
 		const query : Record<string, any> = {};
 		if (group !== MetricsGrouping.None) query.group = group.toString();
 		if (from) query.from = from.toISOString();
