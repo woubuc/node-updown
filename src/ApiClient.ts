@@ -40,10 +40,6 @@ export default class ApiClient {
 	 * @param data      Data object to be sent along as the request body (will be serialised as a querystring)
 	 */
 	public post<T>(endpoint : string, data : Record<string, any>) : Promise<T> {
-		if (this.readonly) {
-			throw new Error('Updown is set to read-only mode');
-		}
-
 		return this.request('POST', getUrl(endpoint), data);
 	}
 
@@ -54,10 +50,6 @@ export default class ApiClient {
 	 * @param data      Data object to be sent along as the request body (will be serialised as a querystring)
 	 */
 	public put<T>(endpoint : string, data : Record<string, any>) : Promise<T> {
-		if (this.readonly) {
-			throw new Error('Updown is set to read-only mode');
-		}
-
 		return this.request('PUT', getUrl(endpoint), data);
 	}
 
@@ -67,10 +59,6 @@ export default class ApiClient {
 	 * @param endpoint  The API endpoint
 	 */
 	public delete<T>(endpoint : string) : Promise<T> {
-		if (this.readonly) {
-			throw new Error('Updown is set to read-only mode');
-		}
-
 		return this.request('DELETE', getUrl(endpoint));
 	}
 
@@ -79,14 +67,21 @@ export default class ApiClient {
 	 *
 	 * @param method  HTTP method to use ('GET', 'POST', ...)
 	 * @param url     The URL
-	 * @param [data]  Data object to be sent along as the request body (will be serialised as a querystring)
+	 * @param data    Data object to be sent along as the request body (will be serialised as a querystring)
 	 */
-	private async request<T>(method : string, url : string, data ?: Record<string, any>) : Promise<T> {
+	private async request<T>(method : 'GET' | 'POST' | 'PUT' | 'DELETE', url : string, data ?: Record<string, any>) : Promise<T> {
 		// TODO add error handling in case requests fail
+
+		if (this.readonly && method !== 'GET') {
+			throw new Error('Updown is set to read-only mode');
+		}
 
 		if (this.verbose) {
 			console.log('[Updown/ApiClient] Executing %s request to %s', method, url);
-			if (data) console.log('[Updown/ApiClient] Body data:', data);
+
+			if (data) {
+				console.log('[Updown/ApiClient] Body data:', data);
+			}
 		}
 
 		const response = await fetch(url, {
