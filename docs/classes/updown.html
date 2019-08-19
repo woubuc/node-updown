@@ -2375,11 +2375,23 @@ img {
 </header>
 <nav class="tsd-navigation secondary">
 	<ul>
+		<li class=" tsd-kind-enum">
+			<a href="../enums/metricsgrouping.html" class="tsd-kind-icon">Metrics<wbr>Grouping</a>
+		</li>
 		<li class=" tsd-kind-class">
 			<a href="check.html" class="tsd-kind-icon">Check</a>
 		</li>
 		<li class=" tsd-kind-class">
 			<a href="downtime.html" class="tsd-kind-icon">Downtime</a>
+		</li>
+		<li class=" tsd-kind-class">
+			<a href="hostgroupedmetrics.html" class="tsd-kind-icon">Host<wbr>Grouped<wbr>Metrics</a>
+		</li>
+		<li class=" tsd-kind-class">
+			<a href="metrics.html" class="tsd-kind-icon">Metrics</a>
+		</li>
+		<li class=" tsd-kind-class">
+			<a href="timegroupedmetrics.html" class="tsd-kind-icon">Time<wbr>Grouped<wbr>Metrics</a>
 		</li>
 		<li class="current tsd-kind-class">
 			<a href="updown.html" class="tsd-kind-icon">Updown</a>
@@ -2394,10 +2406,10 @@ img {
 					<a href="updown.html#deletecheck" class="tsd-kind-icon">delete<wbr>Check</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="updown.html#getcheck" class="tsd-kind-icon">get<wbr>Check</a>
+					<a href="updown.html#getallchecks" class="tsd-kind-icon">get<wbr>All<wbr>Checks</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="updown.html#getchecks" class="tsd-kind-icon">get<wbr>Checks</a>
+					<a href="updown.html#getcheck" class="tsd-kind-icon">get<wbr>Check</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="updown.html#getdowntime" class="tsd-kind-icon">get<wbr>Downtime</a>
@@ -2413,11 +2425,23 @@ img {
 		<li class=" tsd-kind-interface">
 			<a href="../interfaces/checksslstatus.html" class="tsd-kind-icon">Check<wbr>Ssl<wbr>Status</a>
 		</li>
-		<li class=" tsd-kind-type-alias">
-			<a href="../globals.html#checkinterval" class="tsd-kind-icon">Check<wbr>Interval</a>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/requests.html" class="tsd-kind-icon">Requests</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/responsetimes.html" class="tsd-kind-icon">Response<wbr>Times</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/timings.html" class="tsd-kind-icon">Timings</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/updownconfig.html" class="tsd-kind-icon">Updown<wbr>Config</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="../globals.html#checklocation" class="tsd-kind-icon">Check<wbr>Location</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="../globals.html#metricsdata" class="tsd-kind-icon">metrics<wbr>Data</a>
 		</li>
 	</ul>
 </nav>
@@ -2426,8 +2450,30 @@ img {
 		<section class="tsd-panel tsd-comment">
 			<div class="tsd-comment tsd-typography">
 				<div class="lead">
-					<p>The main API client</p>
+					<a href="#updown-api-client" id="updown-api-client" style="color: inherit; text-decoration: none;">
+						<h1>Updown API Client</h1>
+					</a>
+					<p>Create a new client instance with your API key:</p>
+					<pre><code class="language-typescript"><span class="hljs-keyword">import</span> Updown <span class="hljs-keyword">from</span> <span class="hljs-string">'node-updown'</span>;
+<span class="hljs-keyword">const</span> updown = <span class="hljs-keyword">new</span> Updown(<span class="hljs-string">'API_KEY'</span>);</code></pre>
 				</div>
+				<p>To use a readonly key, add a config object with <code>readonly: true</code>:</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> updown = <span class="hljs-keyword">new</span> Updown(<span class="hljs-string">'READONLY_API_KEY'</span>, { readonly: <span class="hljs-literal">true</span> });</code></pre>
+				<p>See <a href="../interfaces/updownconfig.html">UpdownConfig</a> for all options of the config object.</p>
+				<a href="#async" id="async" style="color: inherit; text-decoration: none;">
+					<h3>Async</h3>
+				</a>
+				<p>The API client is asynchronous and all methods will return promises.</p>
+				<p>The documentation will assume use of <code>async/await</code>, but you can of course
+				also use the classic Promise API:</p>
+				<pre><code class="language-typescript">updown.getAllChecks().then(<span class="hljs-function"><span class="hljs-params">checks</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(checks);
+});</code></pre>
+				<a href="#api-endpoints" id="api-endpoints" style="color: inherit; text-decoration: none;">
+					<h3>API endpoints</h3>
+				</a>
+				<p>All API endpoints should be supported in this module. If not, please <a href="https://github.com/woubuc/node-updown">open an issue</a>.</p>
+				<p>For more information on the various API endpoints, see the <a href="https://updown.io/api">Updown API documentation</a></p>
 			</div>
 		</section>
 		<section class="tsd-panel tsd-hierarchy">
@@ -2449,14 +2495,17 @@ img {
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
-						<h3>Methods</h3>
+						<h3>Readonly Methods</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#getallchecks" class="tsd-kind-icon">get<wbr>All<wbr>Checks</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#getcheck" class="tsd-kind-icon">get<wbr>Check</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#getdowntime" class="tsd-kind-icon">get<wbr>Downtime</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#getmetrics" class="tsd-kind-icon">get<wbr>Metrics</a></li>
+						</ul>
+						<h3>Other Methods</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#addcheck" class="tsd-kind-icon">add<wbr>Check</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#deletecheck" class="tsd-kind-icon">delete<wbr>Check</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#getcheck" class="tsd-kind-icon">get<wbr>Check</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#getchecks" class="tsd-kind-icon">get<wbr>Checks</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#getdowntime" class="tsd-kind-icon">get<wbr>Downtime</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#getmetrics" class="tsd-kind-icon">get<wbr>Metrics</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="updown.html#modifycheck" class="tsd-kind-icon">modify<wbr>Check</a></li>
 						</ul>
 					</section>
@@ -2469,14 +2518,14 @@ img {
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
 				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>Updown<span class="tsd-signature-symbol">(</span>apiKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, readonly<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="updown.html" class="tsd-signature-type">Updown</a></li>
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Updown<span class="tsd-signature-symbol">(</span>apiKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, config<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/updownconfig.html" class="tsd-signature-type">UpdownConfig</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="updown.html" class="tsd-signature-type">Updown</a></li>
 					<li class="tsd-signature tsd-kind-icon">new <wbr>Updown<span class="tsd-signature-symbol">(</span>apiKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="updown.html" class="tsd-signature-type">Updown</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in Updown.d.ts:9</li>
+								<li>Defined in Updown.d.ts:48</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2495,12 +2544,10 @@ img {
 								</div>
 							</li>
 							<li>
-								<h5>readonly: <span class="tsd-signature-type">boolean</span></h5>
+								<h5>config: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/updownconfig.html" class="tsd-signature-type">UpdownConfig</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								<div class="tsd-comment tsd-typography">
 									<div class="lead">
-										<p>Set to true if the API key is a readonly key, the
-											client will prevent you from doing anything other
-										than GET requests</p>
+										<p>Config object, see <a href="../interfaces/updownconfig.html">UpdownConfig</a> for the options</p>
 									</div>
 								</div>
 							</li>
@@ -2510,7 +2557,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in Updown.d.ts:18</li>
+								<li>Defined in Updown.d.ts:55</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2535,18 +2582,325 @@ img {
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
-			<h2>Methods</h2>
+			<h2>Readonly Methods</h2>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="addcheck" class="tsd-anchor"></a>
-				<h3>add<wbr>Check</h3>
+				<a name="getallchecks" class="tsd-anchor"></a>
+				<h3>get<wbr>All<wbr>Checks</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Check<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, interval<span class="tsd-signature-symbol">: </span><a href="../globals.html#checkinterval" class="tsd-signature-type">CheckInterval</a>, name<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">get<wbr>All<wbr>Checks<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="check.html" class="tsd-signature-type">Check</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in Updown.d.ts:65</li>
+								<li>Defined in Updown.d.ts:71</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Gets all checks for the user</p>
+							</div>
+							<pre><code class="language-typescript"><span class="hljs-keyword">const</span> checks = <span class="hljs-keyword">await</span> updown.getAllChecks();</code></pre>
+						</div>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="check.html" class="tsd-signature-type">Check</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="getcheck" class="tsd-anchor"></a>
+				<h3>get<wbr>Check</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Check<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="check.html" class="tsd-signature-type">Check</a><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in Updown.d.ts:83</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Gets a single check</p>
+							</div>
+							<pre><code class="language-typescript"><span class="hljs-keyword">const</span> check = <span class="hljs-keyword">await</span> updown.getCheck(<span class="hljs-string">'MY_TOKEN'</span>);</code></pre>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>token: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>The token of the check</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="check.html" class="tsd-signature-type">Check</a><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="getdowntime" class="tsd-anchor"></a>
+				<h3>get<wbr>Downtime</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Downtime<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, page<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="downtime.html" class="tsd-signature-type">Downtime</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in Updown.d.ts:97</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Gets the downtime information for a check</p>
+							</div>
+							<pre><code class="language-typescript"><span class="hljs-keyword">const</span> page1 = <span class="hljs-keyword">await</span> updown.getDowntime(<span class="hljs-string">'MY_TOKEN'</span>);
+<span class="hljs-keyword">const</span> page2 = <span class="hljs-keyword">await</span> updown.getDowntime(<span class="hljs-string">'MY_TOKEN'</span>, <span class="hljs-number">2</span>);</code></pre>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>token: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Token identifier of the check</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> page: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Page number (results are paginated per 100)</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="downtime.html" class="tsd-signature-type">Downtime</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="getmetrics" class="tsd-anchor"></a>
+				<h3>get<wbr>Metrics</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Metrics<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, group<span class="tsd-signature-symbol">: </span><a href="../enums/metricsgrouping.html#host" class="tsd-signature-type">Host</a>, from<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span>, to<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="hostgroupedmetrics.html" class="tsd-signature-type">HostGroupedMetrics</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Metrics<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, group<span class="tsd-signature-symbol">: </span><a href="../enums/metricsgrouping.html#time" class="tsd-signature-type">Time</a>, from<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span>, to<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="timegroupedmetrics.html" class="tsd-signature-type">TimeGroupedMetrics</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Metrics<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, group<span class="tsd-signature-symbol">: </span><a href="../enums/metricsgrouping.html#none" class="tsd-signature-type">None</a>, from<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span>, to<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="metrics.html" class="tsd-signature-type">Metrics</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Metrics<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, from<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span>, to<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="metrics.html" class="tsd-signature-type">Metrics</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in Updown.d.ts:118</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Gets the metrics information for a check during a given time period,
+								grouped by host</p>
+							</div>
+							<pre><code class="language-typescript"><span class="hljs-keyword">const</span> metrics = <span class="hljs-keyword">await</span> updown.getMetrics(<span class="hljs-string">'MY_TOKEN'</span>, MetricsGrouping.Host);
+<span class="hljs-keyword">const</span> metricsLastYear = <span class="hljs-keyword">await</span> updown.getMetrics(<span class="hljs-string">'MY_TOKEN'</span>, MetricsGrouping.Host, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2018/01/01'</span>), <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2018/12/31'</span>));</code></pre>
+							<dl class="tsd-comment-tags">
+								<dt>remarks</dt>
+								<dd><p>As noted in the Updown API documentation, statistic are
+										aggregated per hour. Requesting any time interval smaller than one hour
+									may not return any values.</p>
+								</dd>
+							</dl>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>token: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Token identifier of the check</p>
+								</div>
+							</li>
+							<li>
+								<h5>group: <a href="../enums/metricsgrouping.html#host" class="tsd-signature-type">Host</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>How to group the results</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> from: <span class="tsd-signature-type">Date</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Request metrics starting from this date (defaults to 1 month ago)</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> to: <span class="tsd-signature-type">Date</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Request methods up until this date (defaults to now)</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="hostgroupedmetrics.html" class="tsd-signature-type">HostGroupedMetrics</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in Updown.d.ts:137</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Gets the metrics information for a check during a given time period,
+								grouped by time</p>
+							</div>
+							<pre><code class="language-typescript"><span class="hljs-keyword">const</span> metrics = <span class="hljs-keyword">await</span> updown.getMetrics(<span class="hljs-string">'MY_TOKEN'</span>, MetricsGrouping.Time);
+<span class="hljs-keyword">const</span> metricsLastYear = <span class="hljs-keyword">await</span> updown.getMetrics(<span class="hljs-string">'MY_TOKEN'</span>, MetricsGrouping.Time, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2018/01/01'</span>), <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2018/12/31'</span>));</code></pre>
+							<dl class="tsd-comment-tags">
+								<dt>remarks</dt>
+								<dd><p>As noted in the Updown API documentation, statistic are
+										aggregated per hour. Requesting any time interval smaller than one hour
+									may not return any values.</p>
+								</dd>
+							</dl>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>token: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Token identifier of the check, or the check instance</p>
+								</div>
+							</li>
+							<li>
+								<h5>group: <a href="../enums/metricsgrouping.html#time" class="tsd-signature-type">Time</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>How to group the results</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> from: <span class="tsd-signature-type">Date</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Request metrics starting from this date (defaults to 1 month ago)</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> to: <span class="tsd-signature-type">Date</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Request methods up until this date (defaults to now)</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="timegroupedmetrics.html" class="tsd-signature-type">TimeGroupedMetrics</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in Updown.d.ts:159</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Gets the metrics information for a check during a given time period</p>
+							</div>
+							<pre><code class="language-typescript"><span class="hljs-keyword">const</span> metrics = <span class="hljs-keyword">await</span> updown.getMetrics(<span class="hljs-string">'MY_TOKEN'</span>, MetricsGrouping.None);
+<span class="hljs-keyword">const</span> metricsLastYear = <span class="hljs-keyword">await</span> updown.getMetrics(<span class="hljs-string">'MY_TOKEN'</span>, MetricsGrouping.None, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2018/01/01'</span>), <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2018/12/31'</span>));</code></pre>
+							<dl class="tsd-comment-tags">
+								<dt>remarks</dt>
+								<dd><p>As noted in the Updown API documentation, statistic are
+										aggregated per hour. Requesting any time interval smaller than one hour
+									may not return any values.</p>
+								</dd>
+							</dl>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>token: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Token identifier of the check, or the check instance</p>
+								</div>
+							</li>
+							<li>
+								<h5>group: <a href="../enums/metricsgrouping.html#none" class="tsd-signature-type">None</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>How to group the results</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> from: <span class="tsd-signature-type">Date</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Request metrics starting from this date (defaults to 1 month ago)</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> to: <span class="tsd-signature-type">Date</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Request methods up until this date (defaults to now)</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="metrics.html" class="tsd-signature-type">Metrics</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<p>Returns the Metrics instance, or undefined if no metrics were found
+							for the given check (e.g. when the check was not monitored during
+						the given time period)</p>
+					</li>
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in Updown.d.ts:180</li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Gets the metrics information for a check during a given time period</p>
+							</div>
+							<pre><code class="language-typescript"><span class="hljs-keyword">const</span> metrics = <span class="hljs-keyword">await</span> updown.getMetrics(<span class="hljs-string">'MY_TOKEN'</span>);
+<span class="hljs-keyword">const</span> metricsLastYear = <span class="hljs-keyword">await</span> updown.getMetrics(<span class="hljs-string">'MY_TOKEN'</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2018/01/01'</span>), <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2018/12/31'</span>));</code></pre>
+							<dl class="tsd-comment-tags">
+								<dt>remarks</dt>
+								<dd><p>As noted in the Updown API documentation, statistic are
+										aggregated per hour. Requesting any time interval smaller than one hour
+									may not return any values.</p>
+								</dd>
+							</dl>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>token: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Token identifier of the check, or the check instance</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> from: <span class="tsd-signature-type">Date</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Request metrics starting from this date (defaults to 1 month ago)</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> to: <span class="tsd-signature-type">Date</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Request methods up until this date (defaults to now)</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="metrics.html" class="tsd-signature-type">Metrics</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<p>Returns the Metrics instance, or undefined if no metrics were found
+							for the given check (e.g. when the check was not monitored during
+						the given time period)</p>
+					</li>
+				</ul>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Other Methods</h2>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="addcheck" class="tsd-anchor"></a>
+				<h3>add<wbr>Check</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Check<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, interval<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CheckInterval</span>, name<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in Updown.d.ts:188</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2563,7 +2917,7 @@ img {
 								</div>
 							</li>
 							<li>
-								<h5>interval: <a href="../globals.html#checkinterval" class="tsd-signature-type">CheckInterval</a></h5>
+								<h5>interval: <span class="tsd-signature-type">CheckInterval</span></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>The interval in seconds (15, 30, 60, 120, 300, 600, 1800 or 3600)</p>
 								</div>
@@ -2586,7 +2940,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in Updown.d.ts:80</li>
+								<li>Defined in Updown.d.ts:203</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2608,169 +2962,16 @@ img {
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="getcheck" class="tsd-anchor"></a>
-				<h3>get<wbr>Check</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Check<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="check.html" class="tsd-signature-type">Check</a><span class="tsd-signature-symbol">&gt;</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in Updown.d.ts:34</li>
-							</ul>
-						</aside>
-						<div class="tsd-comment tsd-typography">
-							<div class="lead">
-								<p>Gets a single check</p>
-							</div>
-						</div>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>token: <span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<p>The token of the check</p>
-								</div>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="check.html" class="tsd-signature-type">Check</a><span class="tsd-signature-symbol">&gt;</span></h4>
-					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="getchecks" class="tsd-anchor"></a>
-				<h3>get<wbr>Checks</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Checks<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="check.html" class="tsd-signature-type">Check</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in Updown.d.ts:28</li>
-							</ul>
-						</aside>
-						<div class="tsd-comment tsd-typography">
-							<div class="lead">
-								<p>Gets all checks for the user</p>
-							</div>
-						</div>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="check.html" class="tsd-signature-type">Check</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
-					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="getdowntime" class="tsd-anchor"></a>
-				<h3>get<wbr>Downtime</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Downtime<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, page<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="downtime.html" class="tsd-signature-type">Downtime</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Downtime<span class="tsd-signature-symbol">(</span>check<span class="tsd-signature-symbol">: </span><a href="check.html" class="tsd-signature-type">Check</a>, page<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="downtime.html" class="tsd-signature-type">Downtime</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in Updown.d.ts:41</li>
-							</ul>
-						</aside>
-						<div class="tsd-comment tsd-typography">
-							<div class="lead">
-								<p>Gets the downtime information for a check</p>
-							</div>
-						</div>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>token: <span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<p>Token identifier of the check</p>
-								</div>
-							</li>
-							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> page: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="downtime.html" class="tsd-signature-type">Downtime</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
-					</li>
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in Updown.d.ts:48</li>
-							</ul>
-						</aside>
-						<div class="tsd-comment tsd-typography">
-							<div class="lead">
-								<p>Gets the downtime information for a check</p>
-							</div>
-						</div>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>check: <a href="check.html" class="tsd-signature-type">Check</a></h5>
-								<div class="tsd-comment tsd-typography">
-									<p>The check</p>
-								</div>
-							</li>
-							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> page: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="downtime.html" class="tsd-signature-type">Downtime</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
-					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="getmetrics" class="tsd-anchor"></a>
-				<h3>get<wbr>Metrics</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Metrics<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, from<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span>, to<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span>, group<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">"time"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"host"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in Updown.d.ts:57</li>
-							</ul>
-						</aside>
-						<div class="tsd-comment tsd-typography">
-							<div class="lead">
-								<p>Gets metrics for a specific check</p>
-							</div>
-						</div>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>token: <span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<p>The token for a check</p>
-								</div>
-							</li>
-							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> from: <span class="tsd-signature-type">Date</span></h5>
-							</li>
-							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> to: <span class="tsd-signature-type">Date</span></h5>
-							</li>
-							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> group: <span class="tsd-signature-type">"time"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"host"</span></h5>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
-					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 				<a name="modifycheck" class="tsd-anchor"></a>
 				<h3>modify<wbr>Check</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">modify<wbr>Check<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, url<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, interval<span class="tsd-signature-symbol">?: </span><a href="../globals.html#checkinterval" class="tsd-signature-type">CheckInterval</a>, name<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">modify<wbr>Check<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, url<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, interval<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">CheckInterval</span>, name<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in Updown.d.ts:74</li>
+								<li>Defined in Updown.d.ts:197</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2790,7 +2991,7 @@ img {
 								<h5><span class="tsd-flag ts-flagOptional">Optional</span> url: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
 							</li>
 							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> interval: <a href="../globals.html#checkinterval" class="tsd-signature-type">CheckInterval</a></h5>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> interval: <span class="tsd-signature-type">CheckInterval</span></h5>
 							</li>
 							<li>
 								<h5><span class="tsd-flag ts-flagOptional">Optional</span> name: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>

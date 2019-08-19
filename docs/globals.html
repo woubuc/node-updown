@@ -2375,6 +2375,9 @@ img {
 </header>
 <nav class="tsd-navigation secondary">
 	<ul>
+		<li class=" tsd-kind-enum">
+			<a href="enums/metricsgrouping.html" class="tsd-kind-icon">Metrics<wbr>Grouping</a>
+		</li>
 		<li class=" tsd-kind-class">
 			<a href="classes/check.html" class="tsd-kind-icon">Check</a>
 		</li>
@@ -2382,16 +2385,37 @@ img {
 			<a href="classes/downtime.html" class="tsd-kind-icon">Downtime</a>
 		</li>
 		<li class=" tsd-kind-class">
+			<a href="classes/hostgroupedmetrics.html" class="tsd-kind-icon">Host<wbr>Grouped<wbr>Metrics</a>
+		</li>
+		<li class=" tsd-kind-class">
+			<a href="classes/metrics.html" class="tsd-kind-icon">Metrics</a>
+		</li>
+		<li class=" tsd-kind-class">
+			<a href="classes/timegroupedmetrics.html" class="tsd-kind-icon">Time<wbr>Grouped<wbr>Metrics</a>
+		</li>
+		<li class=" tsd-kind-class">
 			<a href="classes/updown.html" class="tsd-kind-icon">Updown</a>
 		</li>
 		<li class=" tsd-kind-interface">
 			<a href="interfaces/checksslstatus.html" class="tsd-kind-icon">Check<wbr>Ssl<wbr>Status</a>
 		</li>
-		<li class=" tsd-kind-type-alias">
-			<a href="globals.html#checkinterval" class="tsd-kind-icon">Check<wbr>Interval</a>
+		<li class=" tsd-kind-interface">
+			<a href="interfaces/requests.html" class="tsd-kind-icon">Requests</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="interfaces/responsetimes.html" class="tsd-kind-icon">Response<wbr>Times</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="interfaces/timings.html" class="tsd-kind-icon">Timings</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="interfaces/updownconfig.html" class="tsd-kind-icon">Updown<wbr>Config</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="globals.html#checklocation" class="tsd-kind-icon">Check<wbr>Location</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="globals.html#metricsdata" class="tsd-kind-icon">metrics<wbr>Data</a>
 		</li>
 	</ul>
 </nav>
@@ -2403,80 +2427,21 @@ img {
 			</a>
 			<p><a href="!%5Bnpm%5D(https://img.shields.io/npm/v/node-updown?style=flat-square)"><img src="https://img.shields.io/npm/v/node-updown" alt="npm"></a>
 				<a href="https://travis-ci.org/woubuc/node-updown"><img src="https://img.shields.io/travis/woubuc/node-updown" alt="Travis CI"></a>
+				<a href="https://david-dm.org/woubuc/node-updown"><img src="https://img.shields.io/david/woubuc/node-updown" alt="David"></a>
+				<a href="https://codeclimate.com/github/woubuc/node-updown"><img src="https://img.shields.io/codeclimate/maintainability/woubuc/node-updown" alt="Code maintainability"></a>
+				<a href="https://codeclimate.com/github/woubuc/node-updown/trends/test_coverage_total"><img src="https://img.shields.io/codeclimate/coverage/woubuc/node-updown" alt="Code coverage"></a>
 				<a href="#contributors"><img src="https://img.shields.io/badge/contributors-2-orange" alt="Contributors"></a>
 			<a href="https://github.com/woubuc/node-updown/blob/master/LICENSE"><img src="https://img.shields.io/github/license/woubuc/node-updown" alt="MIT license"></a></p>
 			<p>A simple Node.js API wrapper for <a href="http://updown.io">updown.io</a></p>
-			<pre><code>npm install <span class="hljs-keyword">node</span><span class="hljs-title">-updown</span></code></pre>
+			<pre><code>yarn add <span class="hljs-keyword">node</span><span class="hljs-title">-updown</span></code></pre>
 			<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 				<h1>Usage</h1>
 			</a>
-			<p>Simply create a new Updown instance:</p>
-			<pre><code class="language-javascript"><span class="hljs-keyword">import</span> Updown <span class="hljs-keyword">from</span> <span class="hljs-string">'node-updown'</span>;
-<span class="hljs-keyword">const</span> updown = <span class="hljs-keyword">new</span> Updown(<span class="hljs-string">'API_KEY'</span>);</code></pre>
-			<p>To use a readonly key, set the second parameter to <code>true</code>:</p>
-			<pre><code class="language-javascript"><span class="hljs-keyword">const</span> updown = <span class="hljs-keyword">new</span> Updown(<span class="hljs-string">'READONLY_API_KEY'</span>, <span class="hljs-literal">true</span>);</code></pre>
-			<p>All methods in the Updown class return promises.</p>
-			<a href="#methods" id="methods" style="color: inherit; text-decoration: none;">
-				<h2>Methods</h2>
-			</a>
-			<p>Find the generated API documentation at <a href="https://woubuc.github.io/node-updown">woubuc.github.io/node-updown</a></p>
-			<p>For more information on the various API endpoints, see the <a href="https://updown.io/api">Updown API documentation</a></p>
-			<a href="#getchecks" id="getchecks" style="color: inherit; text-decoration: none;">
-				<h4>getChecks()</h4>
-			</a>
-			<p>Gets all checks.</p>
-			<pre><code class="language-javascript">updown.getChecks().then(<span class="hljs-function"><span class="hljs-params">checks</span> =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(checks);
-});</code></pre>
-			<a href="#getchecktoken" id="getchecktoken" style="color: inherit; text-decoration: none;">
-				<h4>getCheck(token)</h4>
-			</a>
-			<p>Gets a single check.</p>
-			<pre><code class="language-javascript">updown.getCheck(<span class="hljs-string">'check_token'</span>).then(<span class="hljs-function"><span class="hljs-params">check</span> =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(check);
-});</code></pre>
-			<a href="#getdowntimetoken--page" id="getdowntimetoken--page" style="color: inherit; text-decoration: none;">
-				<h4>getDowntime(token [, page])</h4>
-			</a>
-			<p>Gets downtime information for a check.</p>
-			<pre><code class="language-javascript">updown.getDowntime(<span class="hljs-string">'check_token'</span>).then(<span class="hljs-function"><span class="hljs-params">downtime</span> =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(downtime);
-});</code></pre>
-			<a href="#getmetricstoken--from-to-sortbytime" id="getmetricstoken--from-to-sortbytime" style="color: inherit; text-decoration: none;">
-				<h4>getMetrics(token [, from][, to][, sortByTime])</h4>
-			</a>
-			<p>Gets all metrics for a check. Parameters <code>from</code> and <code>to</code> are timestamps in milliseconds (e.g. from <code>Date.getTime()</code>).</p>
-			<pre><code class="language-javascript">updown.getMetrics(<span class="hljs-string">'check_token'</span>).then(<span class="hljs-function"><span class="hljs-params">metrics</span> =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(metrics);
-});</code></pre>
-			<a href="#addcheck-url--interval-name" id="addcheck-url--interval-name" style="color: inherit; text-decoration: none;">
-				<h4>addCheck (url [, interval][, name])</h4>
-			</a>
-			<p>Adds a new check. Parameter <code>interval</code> can be 15, 30, 60, 120, 300, 600, 1800 or 3600.</p>
-			<pre><code class="language-javascript"><span class="hljs-comment">// Add a check for http://example.com with 10 minute interval</span>
-updown.addCheck(<span class="hljs-string">'http://example.com'</span>, <span class="hljs-number">600</span>).then(<span class="hljs-function"><span class="hljs-params">newCheck</span> =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(newCheck);
-});</code></pre>
-			<a href="#modifycheck-token--url-interval-name" id="modifycheck-token--url-interval-name" style="color: inherit; text-decoration: none;">
-				<h4>modifyCheck (token [, url][, interval][, name])</h4>
-			</a>
-			<p>Modifies a check.</p>
-			<pre><code class="language-javascript"><span class="hljs-comment">// Change a check to 5 minute interval</span>
-updown.modifyCheck(<span class="hljs-string">'check_token'</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">300</span>).then(<span class="hljs-function"><span class="hljs-params">modifiedCheck</span> =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(modifiedCheck);
-});</code></pre>
-			<a href="#deletecheck-token" id="deletecheck-token" style="color: inherit; text-decoration: none;">
-				<h4>deleteCheck (token)</h4>
-			</a>
-			<p>Deletes a check.</p>
-			<pre><code class="language-javascript"><span class="hljs-comment">// Change a check to 5 minute interval</span>
-updown.deleteCheck(<span class="hljs-string">'check_token'</span>).then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(response.deleted);
-});</code></pre>
+			<p>See the <a href="https://woubuc.github.io/node-updown/classes/updown.html">generated documentation</a></p>
 			<a href="#issues" id="issues" style="color: inherit; text-decoration: none;">
 				<h2>Issues</h2>
 			</a>
-			<p>If you have any problems or questions, just create an issue and I will take a look at it asap.</p>
+			<p>If you experience any bugs or errors, or if you have any questions about how to use this package, be sure to create an issue.</p>
 			<a href="#contributors" id="contributors" style="color: inherit; text-decoration: none;">
 				<h2>Contributors</h2>
 			</a>
@@ -2497,17 +2462,26 @@ updown.deleteCheck(<span class="hljs-string">'check_token'</span>).then(<span cl
 			<a href="#license" id="license" style="color: inherit; text-decoration: none;">
 				<h2>LICENSE</h2>
 			</a>
-			<p>This package is licensed under the <a href="/LICENSE">MIT license</a></p>
+			<p>This package is licensed under the <a href="https://github.com/woubuc/node-updown/blob/master/LICENSE">MIT license</a></p>
 		</div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
 					<section class="tsd-index-section ">
+						<h3>Enumerations</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-enum"><a href="enums/metricsgrouping.html" class="tsd-kind-icon">Metrics<wbr>Grouping</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
 						<h3>Classes</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-class"><a href="classes/check.html" class="tsd-kind-icon">Check</a></li>
 							<li class="tsd-kind-class"><a href="classes/downtime.html" class="tsd-kind-icon">Downtime</a></li>
+							<li class="tsd-kind-class"><a href="classes/hostgroupedmetrics.html" class="tsd-kind-icon">Host<wbr>Grouped<wbr>Metrics</a></li>
+							<li class="tsd-kind-class"><a href="classes/metrics.html" class="tsd-kind-icon">Metrics</a></li>
+							<li class="tsd-kind-class"><a href="classes/timegroupedmetrics.html" class="tsd-kind-icon">Time<wbr>Grouped<wbr>Metrics</a></li>
 							<li class="tsd-kind-class"><a href="classes/updown.html" class="tsd-kind-icon">Updown</a></li>
 						</ul>
 					</section>
@@ -2515,13 +2489,22 @@ updown.deleteCheck(<span class="hljs-string">'check_token'</span>).then(<span cl
 						<h3>Interfaces</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-interface"><a href="interfaces/checksslstatus.html" class="tsd-kind-icon">Check<wbr>Ssl<wbr>Status</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/requests.html" class="tsd-kind-icon">Requests</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/responsetimes.html" class="tsd-kind-icon">Response<wbr>Times</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/timings.html" class="tsd-kind-icon">Timings</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/updownconfig.html" class="tsd-kind-icon">Updown<wbr>Config</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
 						<h3>Type aliases</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-type-alias"><a href="globals.html#checkinterval" class="tsd-kind-icon">Check<wbr>Interval</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#checklocation" class="tsd-kind-icon">Check<wbr>Location</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Variables</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-variable"><a href="globals.html#metricsdata" class="tsd-kind-icon">metrics<wbr>Data</a></li>
 						</ul>
 					</section>
 				</div>
@@ -2529,21 +2512,6 @@ updown.deleteCheck(<span class="hljs-string">'check_token'</span>).then(<span cl
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Type aliases</h2>
-			<section class="tsd-panel tsd-member tsd-kind-type-alias">
-				<a name="checkinterval" class="tsd-anchor"></a>
-				<h3>Check<wbr>Interval</h3>
-				<div class="tsd-signature tsd-kind-icon">Check<wbr>Interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">15</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">30</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">60</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">120</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">300</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">600</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1800</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">3600</span></div>
-				<aside class="tsd-sources">
-					<ul>
-						<li>Defined in Updown.d.ts:4</li>
-					</ul>
-				</aside>
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>The interval for checks</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="checklocation" class="tsd-anchor"></a>
 				<h3>Check<wbr>Location</h3>
@@ -2558,6 +2526,19 @@ updown.deleteCheck(<span class="hljs-string">'check_token'</span>).then(<span cl
 						<p>The possible locations of a check</p>
 					</div>
 				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Variables</h2>
+			<section class="tsd-panel tsd-member tsd-kind-variable">
+				<a name="metricsdata" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> metrics<wbr>Data</h3>
+				<div class="tsd-signature tsd-kind-icon">metrics<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in metrics/Metrics.Spec.d.ts:1</li>
+					</ul>
+				</aside>
 			</section>
 		</section>
 		<footer class="with-border-bottom">
