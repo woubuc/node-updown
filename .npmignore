@@ -1,8 +1,8 @@
 # Ignore everything, only whitelist /dist/*
 *
 !/dist/*
+!/dist/**/*
 
 # Test files should not be included
 /dist/*.spec.*
-/dist/*.ispec.*
-/dist/__mocks__/*
+/dist/**/*.spec.*
