@@ -10,9 +10,9 @@ import UpdownConfig, { parseConfig } from './UpdownConfig';
 type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
 
 export enum MetricsGrouping {
-	None,
-	Time,
-	Host,
+	None = 'none',
+	Time = 'time',
+	Host = 'host',
 }
 
 /**
@@ -246,41 +246,49 @@ export default class Updown {
 
 	public async getMetrics(token : string, group ?: MetricsGrouping | Date, from ?: Date, to ?: Date) : Promise<Metrics | HostGroupedMetrics[] | TimeGroupedMetrics[] | undefined> {
 		if (group instanceof Date) {
-			to = from;
-			from = group;
-			group = MetricsGrouping.None;
+			return this._getMetrics(token, MetricsGrouping.None, group, from);
 		}
 
-		let groupValue : string | undefined = undefined;
-		if (group === MetricsGrouping.Host) groupValue = 'host';
-		else if (group === MetricsGrouping.Time) groupValue = 'time';
+		if (!group) {
+			return this._getMetrics(token, MetricsGrouping.None, from, to);
+		}
 
+		return this._getMetrics(token, group, from, to);
+	}
+
+	/** @internal */
+	private async _getMetrics(token : string, group : MetricsGrouping, from ?: Date, to ?: Date) : Promise<Metrics | HostGroupedMetrics[] | TimeGroupedMetrics[] | undefined> {
 		if (this.verbose) {
-			if (groupValue) {
-				console.log('[Updown] Getting metrics for check with token %s, grouped by %s', token, groupValue);
+			if (group !== MetricsGrouping.None) {
+				console.log('[Updown] Getting metrics for check with token %s, grouped by %s', token, group.toString());
 			} else {
 				console.log('[Updown] Getting metrics for check with token %s', token);
 			}
 		}
 
 		const query : Record<string, any> = {};
-		if (groupValue) query.group = groupValue;
+		if (group !== MetricsGrouping.None) query.group = group.toString();
 		if (from) query.from = from.toISOString();
 		if (to) query.to = to.toISOString();
 
 		const metricsData = await this.client.get<Record<string, any>>(`checks/${ token }/metrics`, query);
 
-		if (group === MetricsGrouping.Host) {
-			return Object.keys(metricsData).map(host => new HostGroupedMetrics(host, metricsData[host]));
+		switch (group) {
+			case MetricsGrouping.Host:
+				return Object.keys(metricsData).map(host => new HostGroupedMetrics(host, metricsData[host]));
+
+			case MetricsGrouping.Time:
+				return Object.keys(metricsData).map(time => new TimeGroupedMetrics(time, metricsData[time]));
+
+			default:
+				// An empty object means there is no metrics data yet for this check
+				if (Object.keys(metricsData).length === 0) {
+					return undefined;
+				}
+
+				return new Metrics(metricsData);
+
 		}
-
-		if (group === MetricsGrouping.Time) {
-			return Object.keys(metricsData).map(time => new TimeGroupedMetrics(time, metricsData[time]));
-		}
-
-		if (Object.keys(metricsData).length === 0) return undefined;
-
-		return new Metrics(metricsData);
 	}
 
 

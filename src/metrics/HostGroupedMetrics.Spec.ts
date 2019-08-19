@@ -10,7 +10,7 @@ describe('HostGroupedMetrics initialisation', () => {
 				ip: '45.76.104.117',
 				city: 'Tokyo',
 				country: 'Japan',
-				country_code: 'jp'
+				country_code: 'jp' // eslint-disable-line @typescript-eslint/camelcase
 			}
 		})).toBeInstanceOf(HostGroupedMetrics);
 	});
