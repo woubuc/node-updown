@@ -23,12 +23,12 @@ export default class ApiClient {
 	/**
 	 * Executes a GET request to the given API endpoint
 	 *
-	 * @param endpoint  The API endpoint
-	 * @param data      Query parameters to include in the request URL
+	 * @param endpoint   The API endpoint
+	 * @param queryData  Query parameters to include in the request URL
 	 */
-	public get<T>(endpoint : string, data : Record<string, any> = {}) : Promise<T> {
+	public get<T>(endpoint : string, queryData : Record<string, any> = {}) : Promise<T> {
 		// Add timestamp to query to prevent caching
-		const query = Object.assign({ _t: new Date().getTime() }, data);
+		const query = Object.assign({ _t: new Date().getTime() }, queryData);
 
 		return this.request('GET', getUrl(endpoint, query));
 	}
@@ -117,7 +117,7 @@ export default class ApiClient {
 function getUrl(endpoint : string, query : Record<string, any> = {}) : string {
 	if (endpoint.startsWith('/')) endpoint = endpoint.slice(1);
 
-	if (!query) {
+	if (query) {
 		return `https://updown.io/api/${ endpoint }?${ qs.stringify(query) }`;
 	} else {
 		return `https://updown.io/api/${ endpoint }`;
