@@ -2,7 +2,8 @@
 [![npm](https://img.shields.io/npm/v/node-updown)](![npm](https://img.shields.io/npm/v/node-updown?style=flat-square))
 [![Travis CI](https://img.shields.io/travis/woubuc/node-updown)](https://travis-ci.org/woubuc/node-updown)
 [![David](https://img.shields.io/david/woubuc/node-updown)](https://david-dm.org/woubuc/node-updown)
-[![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/woubuc/node-updown)](https://codeclimate.com/github/woubuc/node-updown)
+[![Code maintainability](https://img.shields.io/codeclimate/maintainability/woubuc/node-updown)](https://codeclimate.com/github/woubuc/node-updown)
+[![Code coverage](https://img.shields.io/codeclimate/coverage/woubuc/node-updown)](https://codeclimate.com/github/woubuc/node-updown/trends/test_coverage_total)
 [![Contributors](https://img.shields.io/badge/contributors-2-orange)](#contributors)
 [![MIT license](https://img.shields.io/github/license/woubuc/node-updown)](https://github.com/woubuc/node-updown/blob/master/LICENSE)
 
