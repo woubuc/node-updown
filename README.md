@@ -1,5 +1,5 @@
 # node-updown
-[![npm](https://img.shields.io/npm/v/node-updown)](![npm](https://img.shields.io/npm/v/node-updown?style=flat-square))
+[![npm](https://img.shields.io/npm/v/node-updown)](https://www.npmjs.com/package/node-updown)
 [![David](https://img.shields.io/david/woubuc/node-updown)](https://david-dm.org/woubuc/node-updown)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 [![MIT license](https://img.shields.io/github/license/woubuc/node-updown)](https://github.com/woubuc/node-updown/blob/master/LICENSE)
