@@ -1,27 +1,22 @@
 {
-	"compilerOptions": {
-		"target": "esnext",
-		"module": "commonjs",
-		"lib": ["esnext"],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
 
 		"declaration": true,
-		"declarationMap": true,
 		"sourceMap": true,
 
-		"outDir": "dist",
-		"rootDir": "src",
-		"removeComments": false,
-		"stripInternal": true,
+		"outDir": "./lib",
+		"rootDir": "./src",
 
 		"strict": true,
-		"noImplicitAny": true,
-		"noImplicitThis": true,
-
 		"noUnusedLocals": true,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 
 		"moduleResolution": "node",
-		"esModuleInterop": true
-	}
+		"esModuleInterop": true,
+
+		"forceConsistentCasingInFileNames": true
+  }
 }

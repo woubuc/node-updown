@@ -1,40 +1,18 @@
-/* eslint-disable unicorn/filename-case */
+export { UpdownClient } from './client/UpdownClient';
 
-/**
- * @file This file serves as the entrypoint for the module. It exports the main
- *       Updown class as the default export, along with all other publicly
- *       available types.
- *
- *       Every export is repeated twice here, as an ES6 module export for
- *       Typescript applications and most bundlers, and as a CommonJS export
- *       for traditional Node.js applications.
- */
+// Ordered as they appear on Updown's API docs
 
-import Updown, { MetricsGrouping } from './Updown';
-import Check from './Check';
-import Downtime from './Downtime';
-import Metrics from './metrics/Metrics';
-import TimeGroupedMetrics from './metrics/TimeGroupedMetrics';
-import HostGroupedMetrics from './metrics/HostGroupedMetrics';
+export { getChecks } from './api/getChecks';
+export { getCheck } from './api/getCheck';
+export { getDowntimes } from './api/getDowntimes';
+export { getMetrics } from './api/getMetrics';
 
-// The default export is the main class, which should be the only necessary
-// entity for most applications
-export default Updown;
-module.exports = Updown;
+export { addCheck } from './api/addCheck';
+export { updateCheck } from './api/updateCheck';
+export { deleteCheck } from './api/deleteCheck';
 
-// Re-export other entities as ES6 modules and as CommonJS modules
-export {
-	Check,
-	Downtime,
-	Metrics,
-	HostGroupedMetrics,
-	TimeGroupedMetrics,
-	MetricsGrouping
-};
+export { getNodes, getIpv4Nodes, getIpv6Nodes } from './api/getNodes';
 
-module.exports.Check = Check;
-module.exports.Downtime = Downtime;
-module.exports.Metrics = Metrics;
-module.exports.HostGroupedMetrics = HostGroupedMetrics;
-module.exports.TimeGroupedMetrics = TimeGroupedMetrics;
-module.exports.MetricsGrouping = MetricsGrouping;
+export { getWebhooks } from './api/getWebhooks';
+export { addWebhook } from './api/addWebhook';
+export { deleteWebhook } from './api/deleteWebhook';
