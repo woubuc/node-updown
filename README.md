@@ -125,4 +125,4 @@ client.deleteWebhook(id);
 If you experience any bugs or errors, or if you have any questions about how to use this library, be sure to create an issue.
 
 ## LICENSE
-This package is licensed under the [MIT license](https://github.com/woubuc/node-updown/blob/master/LICENSE).
+This package is licensed under the [MIT license](https://github.com/woubuc/node-updown/blob/master/LICENSE.txt).
