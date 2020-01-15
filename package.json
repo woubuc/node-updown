@@ -2,7 +2,7 @@
   "name": "node-updown",
   "description": "Transparent Node.JS wrapper for the updown.io API",
   "author": "Wouter Buckens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
