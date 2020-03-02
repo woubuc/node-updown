@@ -1,14 +1,14 @@
 import { Check, CheckOptions } from '../types/Check';
 import { Deleted } from '../types/Deleted';
 import { Downtime } from '../types/Downtime';
-import { GroupedMetrics, Metrics } from '../types/Metrics';
+import { MetricsGroup } from '../types/Metrics';
 import { Nodes } from '../types/Node';
 import { Webhook, WebhookOptions } from '../types/Webhook';
 
 import { getChecks } from '../api/getChecks';
 import { getCheck, GetCheckOptions } from '../api/getCheck';
 import { getDowntimes, GetDowntimesOptions } from '../api/getDowntimes';
-import { getMetrics, GetGroupedMetricsOptions, GetMetricsOptions } from '../api/getMetrics';
+import { getMetrics, GetMetricsOptions } from '../api/getMetrics';
 import { addCheck } from '../api/addCheck';
 import { updateCheck } from '../api/updateCheck';
 import { deleteCheck } from '../api/deleteCheck';
@@ -37,11 +37,8 @@ export class UpdownClient {
 		return getDowntimes(this.apiKey, token, options);
 	}
 
-	public getMetrics(token : string, options ?: GetMetricsOptions) : Promise<Metrics>;
-	public getMetrics(token : string, options : GetGroupedMetricsOptions) : Promise<GroupedMetrics>;
-	public getMetrics(token : string, options : GetGroupedMetricsOptions = {}) : Promise<Metrics | GroupedMetrics> {
-		return getMetrics(this.apiKey, token, options);
-	}
+	public getMetrics = async (token : string, options ?: GetMetricsOptions<MetricsGroup>) =>
+		getMetrics(this.apiKey, token, options);
 
 	public addCheck(options : CheckOptions) : Promise<Check> {
 		return addCheck(this.apiKey, options);
