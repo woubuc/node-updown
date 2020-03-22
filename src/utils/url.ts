@@ -18,5 +18,5 @@ export function formatUrl(apiKey : string, endpoint : string[], query : Record<s
 	if (apiKey.length > 0) {
 		key = `&api-key=${ encodeURIComponent(apiKey) }`;
 	}
-	return `http://updown.io/api/${ url }?${ querystring }${ key }`;
+	return `https://updown.io/api/${ url }?${ querystring }${ key }`;
 }
