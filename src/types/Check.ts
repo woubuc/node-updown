@@ -1,4 +1,5 @@
-export type CheckLocation = 'lan' | 'mia' | 'bhs' | 'rbx' | 'fra' | 'sin' | 'tok' | 'syd';
+import { Location } from './Node'
+
 export type CheckInterval = 15 | 30 | 60 | 120 | 300 | 600 | 1800 | 3600;
 export type ApdexTarget = 0.125 | 0.25 | 0.5 | 1 | 2;
 export type HttpVerb = 'GET/HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS';
@@ -57,7 +58,7 @@ export interface CheckOptions {
 	/**
 	 * Disabled monitoring locations
 	 */
-	disabled_locations ?: CheckLocation[];
+	disabled_locations ?: Location[];
 
 	/**
 	 * The HTTP headers you want in updown requests

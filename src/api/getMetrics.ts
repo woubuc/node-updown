@@ -1,12 +1,12 @@
 import fetch from 'cross-fetch';
 
-import { GroupedMetrics, Metrics } from '../types/Metrics';
-
+import { APIKey } from '../types';
+import { GroupedMetrics, Metrics, MetricsGroup } from '../types/Metrics';
 import { formatUrl } from '../utils/url';
 import { handleResponse } from '../utils/handleResponse';
 
 
-export interface GetMetricsOptions {
+export type GetMetricsOptions<Group extends MetricsGroup> = {
 	/**
 	 * Start time, defaults to 1 month ago
 	 */
@@ -16,32 +16,21 @@ export interface GetMetricsOptions {
 	 * End time, defaults to now
 	 */
 	to ?: string;
-}
 
-export interface GetGroupedMetricsOptions extends GetMetricsOptions {
 	/**
 	 * Group data by hour ('time') or monitoring location ('host')
 	 */
-	group ?: 'time' | 'host';
-}
+	group ?: Group;
+};
 
-
-export function getMetrics(
-	apiKey : string,
+export const getMetrics = async <
+	Group extends MetricsGroup,
+	Options extends GetMetricsOptions<Group>
+	>(
+	apiKey : APIKey,
 	token : string,
-	options ?: GetMetricsOptions,
-) : Promise<Metrics>;
-
-export function getMetrics(
-	apiKey : string,
-	token : string,
-	options : GetGroupedMetricsOptions
-) : Promise<GroupedMetrics>;
-
-export function getMetrics(
-	apiKey : string,
-	token : string,
-	options : GetGroupedMetricsOptions = {}
-) : Promise<Metrics | GroupedMetrics> {
-	return fetch(formatUrl(apiKey, ['checks', token, 'metrics'], options)).then(handleResponse);
-}
+	options ?: Options
+) : Promise<Options extends undefined ? Metrics : GroupedMetrics<Group>> =>
+	fetch(formatUrl(apiKey, ['checks', token, 'metrics'], options)).then(
+		handleResponse
+	);

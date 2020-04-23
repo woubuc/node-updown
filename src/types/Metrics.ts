@@ -1,3 +1,5 @@
+import { Location, Node } from './Node'
+
 export interface Metrics {
 	apdex : number;
 
@@ -26,4 +28,14 @@ export interface Metrics {
 	};
 }
 
-export type GroupedMetrics = Record<string, Metrics>;
+export type MetricsGroup = 'host' | 'time';
+
+type MetricsByHost = Metrics & {
+	host : Pick<Node, 'city' | 'country' | 'country_code' | 'ip'>;
+};
+type MetricsGroupedByHost = { [key in Location] : MetricsByHost };
+type MetricsGroupedByTime = { [key : string] : Metrics };
+
+export type GroupedMetrics<Group extends MetricsGroup> = Group extends 'host'
+	? MetricsGroupedByHost
+	: MetricsGroupedByTime;

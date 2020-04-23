@@ -1,9 +1,11 @@
-export function formatUrl(apiKey : string, endpoint : string[], query : Record<string, any> = {}) : string {
-	let url = endpoint
+import { APIKey } from '../types';
+
+export const formatUrl = (apiKey : APIKey, endpoint : string[], query : Record<string, any> = {}) : string => {
+	const url = endpoint
 		.map(s => encodeURIComponent(s))
 		.join('/');
 
-	let querystring = Object.entries(query)
+	const querystring = Object.entries(query)
 		.filter(([_, value]) => value !== undefined)
 		.map(([key, value]) => {
 			if (typeof value === 'boolean') {
@@ -14,9 +16,7 @@ export function formatUrl(apiKey : string, endpoint : string[], query : Record<s
 		.map(([key, value]) => `${ encodeURIComponent(key)  }=${  encodeURIComponent(value) }`)
 		.join('&');
 
-	let key = '';
-	if (apiKey.length > 0) {
-		key = `&api-key=${ encodeURIComponent(apiKey) }`;
-	}
+	const key = apiKey.length > 0?`&api-key=${ encodeURIComponent(apiKey) }` : '';
+
 	return `https://updown.io/api/${ url }?${ querystring }${ key }`;
-}
+};
